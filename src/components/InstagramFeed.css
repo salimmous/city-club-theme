@@ -1,0 +1,102 @@
+.instagram-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+}
+
+@media (min-width: 640px) {
+  .instagram-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (min-width: 768px) {
+  .instagram-grid.cols-3 {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .instagram-grid.cols-4 {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  .instagram-grid.cols-5 {
+    grid-template-columns: repeat(5, 1fr);
+  }
+
+  .instagram-grid.cols-6 {
+    grid-template-columns: repeat(6, 1fr);
+  }
+}
+
+.instagram-post {
+  position: relative;
+  overflow: hidden;
+  border-radius: 0.5rem;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.instagram-post:hover {
+  transform: translateY(-5px);
+  box-shadow:
+    0 15px 30px -5px rgba(0, 0, 0, 0.1),
+    0 0 15px rgba(249, 115, 22, 0.15);
+}
+
+.instagram-post img {
+  width: 100%;
+  aspect-ratio: 1;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.instagram-post:hover img {
+  transform: scale(1.05);
+}
+
+.instagram-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+}
+
+.instagram-post:hover .instagram-overlay {
+  opacity: 1;
+}
+
+.instagram-caption {
+  padding: 0.75rem;
+  background: white;
+  border-bottom-left-radius: 0.5rem;
+  border-bottom-right-radius: 0.5rem;
+}
+
+.instagram-follow {
+  display: inline-flex;
+  align-items: center;
+  color: #f97316;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  margin-top: 1rem;
+  padding: 0.5rem 1rem;
+  border-radius: 9999px;
+  background-color: rgba(249, 115, 22, 0.1);
+  border: 1px solid rgba(249, 115, 22, 0.2);
+}
+
+.instagram-follow:hover {
+  color: white;
+  background-color: #f97316;
+  transform: translateY(-2px);
+  box-shadow: 0 10px 15px -3px rgba(249, 115, 22, 0.3);
+}
+
+.instagram-follow svg {
+  margin-right: 0.5rem;
+}
