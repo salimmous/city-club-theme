@@ -1,6 +1,5 @@
 import React from "react";
 import Header from "@/components/Header";
-import Footer from "@/components/Footer";
 import { ThemeProvider } from "@/components/ui/theme-provider";
 
 interface MainLayoutProps {
@@ -17,7 +16,6 @@ const MainLayout: React.FC<MainLayoutProps> = ({
       <div className="flex flex-col min-h-screen bg-background">
         <Header transparent={transparentHeader} />
         <main className="flex-grow">{children}</main>
-        <Footer />
       </div>
     </ThemeProvider>
   );

@@ -10,6 +10,7 @@ import {
   Users,
   Info,
   Home,
+  Phone,
 } from "lucide-react";
 import { Button } from "./ui/button";
 import { ModeToggle } from "./ui/mode-toggle";
@@ -87,6 +88,36 @@ const Header = ({ transparent = false }: HeaderProps) => {
     <header
       className={`w-full fixed top-0 left-0 z-50 transition-all duration-300 ${headerClass}`}
     >
+      {/* Top bar with contact info - Only visible on desktop */}
+      <div className="hidden lg:block w-full py-1 bg-orange-500 text-white">
+        <div className="container mx-auto px-4 flex justify-between items-center text-sm">
+          <div className="flex items-center gap-4">
+            <div className="flex items-center">
+              <Phone className="h-3 w-3 mr-1" />
+              <span>+212 522 123 456</span>
+            </div>
+            <div>
+              <span className="font-medium">Horaires:</span> Lun-Ven 6h-22h |
+              Sam-Dim 8h-20h
+            </div>
+          </div>
+          <div className="flex items-center gap-2">
+            <a href="#" className="hover:underline">
+              Carrières
+            </a>
+            <span>|</span>
+            <a href="#" className="hover:underline">
+              Contact
+            </a>
+            <span>|</span>
+            <a href="#" className="hover:underline">
+              FAQ
+            </a>
+          </div>
+        </div>
+      </div>
+
+      {/* Main header */}
       <div className="container mx-auto px-4 h-20 flex items-center justify-between">
         {/* Logo */}
         <Link to="/" className="flex items-center">
@@ -121,6 +152,33 @@ const Header = ({ transparent = false }: HeaderProps) => {
         <div className="flex items-center gap-3">
           <div className="hidden md:block">
             <ModeToggle />
+          </div>
+
+          {/* Location Selector - Desktop */}
+          <div className="hidden lg:block">
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="flex items-center border-orange-200"
+                >
+                  <MapPin className="h-4 w-4 mr-1 text-orange-500" />
+                  <span>Choisir un Club</span>
+                  <ChevronDown className="ml-1 h-4 w-4" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="w-56">
+                <DropdownMenuItem>Casablanca Downtown</DropdownMenuItem>
+                <DropdownMenuItem>Marrakech Plaza</DropdownMenuItem>
+                <DropdownMenuItem>Rabat Central</DropdownMenuItem>
+                <DropdownMenuItem>Tangier Bay</DropdownMenuItem>
+                <DropdownMenuItem>Agadir Beach</DropdownMenuItem>
+                <DropdownMenuItem className="font-semibold text-orange-500">
+                  Voir tous les clubs
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
           </div>
 
           {/* CTA Button */}
@@ -164,6 +222,21 @@ const Header = ({ transparent = false }: HeaderProps) => {
                 {item.name}
               </Link>
             ))}
+
+            {/* Mobile Location Selector */}
+            <div className="px-4 py-3">
+              <p className="text-sm font-medium mb-2 text-muted-foreground">
+                Sélectionnez un club
+              </p>
+              <select className="w-full p-2 border border-gray-200 dark:border-gray-700 rounded-md bg-background">
+                <option>Casablanca Downtown</option>
+                <option>Marrakech Plaza</option>
+                <option>Rabat Central</option>
+                <option>Tangier Bay</option>
+                <option>Agadir Beach</option>
+              </select>
+            </div>
+
             <div className="pt-4 flex items-center justify-between">
               <ModeToggle />
               <Button
@@ -177,37 +250,6 @@ const Header = ({ transparent = false }: HeaderProps) => {
           </nav>
         </div>
       )}
-
-      {/* Location Dropdown - Only visible on desktop */}
-      <div
-        className={`hidden lg:block w-full py-2 ${transparent && !isScrolled ? "bg-black/30 backdrop-blur-sm text-white" : "bg-muted/50 text-foreground border-b dark:border-gray-800"}`}
-      >
-        <div className="container mx-auto px-4 flex justify-between items-center">
-          <div className="flex items-center">
-            <span className="text-sm font-medium mr-2">Trouver un Club:</span>
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="ghost" size="sm" className="flex items-center">
-                  <span>Choisir un Club</span>
-                  <ChevronDown className="ml-1 h-4 w-4" />
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="start" className="w-56">
-                <DropdownMenuItem>Casablanca Downtown</DropdownMenuItem>
-                <DropdownMenuItem>Marrakech Plaza</DropdownMenuItem>
-                <DropdownMenuItem>Rabat Central</DropdownMenuItem>
-                <DropdownMenuItem>Tangier Bay</DropdownMenuItem>
-                <DropdownMenuItem>Agadir Beach</DropdownMenuItem>
-                <DropdownMenuItem>View All Locations</DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-          </div>
-          <div className="text-sm">
-            <span className="font-medium">Horaires:</span> Lun-Ven 6h-22h |
-            Sam-Dim 8h-20h
-          </div>
-        </div>
-      </div>
     </header>
   );
 };

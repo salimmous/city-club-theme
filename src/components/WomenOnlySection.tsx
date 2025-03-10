@@ -1,6 +1,8 @@
 import React from "react";
 import { Heart, Shield, Users } from "lucide-react";
 import { Button } from "./ui/button";
+import { RevealOnScroll } from "./ui/reveal-on-scroll";
+import { TextReveal } from "./ui/text-reveal";
 
 interface Benefit {
   title: string;
@@ -26,79 +28,100 @@ const WomenOnlySection: React.FC<WomenOnlySectionProps> = ({
       title: "Environnement Privé",
       description:
         "Un espace exclusivement féminin pour s'entraîner en toute tranquillité",
-      icon: <Shield className="h-6 w-6 text-pink-500" />,
+      icon: <Shield className="h-6 w-6 text-white" />,
     },
     {
       title: "Coachs Féminines",
       description:
         "Des professionnelles qualifiées pour vous accompagner dans votre parcours fitness",
-      icon: <Users className="h-6 w-6 text-pink-500" />,
+      icon: <Users className="h-6 w-6 text-white" />,
     },
     {
       title: "Programmes Spécifiques",
       description:
         "Des entraînements conçus pour répondre aux objectifs et besoins des femmes",
-      icon: <Heart className="h-6 w-6 text-pink-500" />,
+      icon: <Heart className="h-6 w-6 text-white" />,
     },
   ],
   image = "https://images.unsplash.com/photo-1518611012118-696072aa579a?w=800&q=80",
   ctaText = "DÉCOUVRIR CITY LADY",
 }) => {
   return (
-    <section className="py-24 bg-gradient-to-r from-pink-100 to-pink-200 relative overflow-hidden">
-      <div className="absolute top-0 right-0 w-96 h-96 bg-pink-300 rounded-full opacity-20 -mr-32 -mt-32 blur-2xl animate-pulse-slow"></div>
-      <div className="absolute bottom-0 left-0 w-96 h-96 bg-pink-300 rounded-full opacity-20 -ml-32 -mb-32 blur-2xl animate-pulse-slow"></div>
-      <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1518611012118-696072aa579a?w=1920&q=80')] opacity-5 bg-cover bg-fixed mix-blend-overlay"></div>
-      <div className="container mx-auto px-4">
-        <div className="flex flex-col lg:flex-row items-center gap-12">
-          <div className="w-full lg:w-1/2 order-2 lg:order-1">
-            <div className="inline-block bg-pink-500 text-white px-4 py-1 rounded-full mb-4">
-              <span className="text-sm font-medium tracking-wider">
-                {subtitle}
-              </span>
-            </div>
-            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6 tracking-tight">
-              <span className="relative inline-block">
-                <span className="relative z-10">{title}</span>
-                <span className="absolute bottom-2 left-0 w-full h-3 bg-pink-500/20 -z-10"></span>
-              </span>
-            </h2>
-            <p className="text-gray-600 mb-10 text-lg leading-relaxed max-w-xl">
-              {description}
-            </p>
+    <section className="py-24 relative overflow-hidden bg-gradient-to-r from-pink-900 to-pink-800 dark:from-pink-950 dark:to-pink-900 text-white">
+      {/* Background overlay with image */}
+      <div className="absolute inset-0 mix-blend-overlay opacity-10">
+        <img
+          src="https://images.unsplash.com/photo-1518611012118-696072aa579a?w=1920&q=80"
+          alt=""
+          className="w-full h-full object-cover"
+        />
+      </div>
 
-            <div className="space-y-6 mb-8">
+      <div className="container mx-auto px-4 relative z-10">
+        <div className="flex flex-col lg:flex-row items-center gap-16">
+          {/* Content Column */}
+          <div className="w-full lg:w-1/2 order-2 lg:order-1">
+            <RevealOnScroll direction="up" delay={100}>
+              <div className="inline-block bg-pink-500/20 px-4 py-1 rounded-full mb-4 border border-pink-500/30">
+                <span className="text-sm font-medium tracking-wider text-pink-300">
+                  {subtitle}
+                </span>
+              </div>
+            </RevealOnScroll>
+
+            <TextReveal
+              text={title}
+              as="h2"
+              className="text-4xl md:text-5xl font-black mb-6 leading-tight tracking-tight"
+              revealDelay={300}
+            />
+
+            <RevealOnScroll direction="up" delay={500}>
+              <p className="text-lg mb-10 font-light text-pink-100 max-w-xl">
+                {description}
+              </p>
+            </RevealOnScroll>
+
+            {/* Benefits */}
+            <div className="space-y-6">
               {benefits.map((benefit, index) => (
-                <div key={index} className="flex items-start">
-                  <div className="flex-shrink-0 mr-4 bg-gradient-to-br from-pink-500 to-pink-600 p-4 rounded-full shadow-md animate-float text-white">
+                <div key={index} className="flex items-start gap-4 group">
+                  <div
+                    className={`bg-pink-500 rounded-full p-4 flex-shrink-0 transition-all duration-300 group-hover:scale-110`}
+                  >
                     {benefit.icon}
                   </div>
                   <div>
-                    <h3 className="font-bold text-gray-800 text-lg mb-1">
-                      {benefit.title}
-                    </h3>
-                    <p className="text-gray-600">{benefit.description}</p>
+                    <h3 className="text-lg font-bold mb-2">{benefit.title}</h3>
+                    <p className="text-pink-100 text-sm">
+                      {benefit.description}
+                    </p>
                   </div>
                 </div>
               ))}
             </div>
 
-            <Button className="bg-gradient-to-r from-pink-500 to-pink-600 text-white font-bold relative overflow-hidden group shadow-lg shadow-pink-500/30 transition-all duration-300 hover:scale-105 px-8 py-6 text-lg rounded-xl">
-              <span className="relative z-10">{ctaText}</span>
-              <span className="absolute inset-0 bg-gradient-to-r from-pink-600 to-pink-400 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
-            </Button>
+            <RevealOnScroll direction="up" delay={800}>
+              <Button
+                className="mt-10 bg-pink-500 hover:bg-pink-600 text-white px-8 py-4 text-lg font-bold shadow-lg shadow-pink-500/30 transition-all duration-300 hover:scale-105 rounded-lg"
+                size="lg"
+              >
+                {ctaText}
+              </Button>
+            </RevealOnScroll>
           </div>
 
+          {/* Image Column */}
           <div className="w-full lg:w-1/2 order-1 lg:order-2">
-            <div className="relative">
-              <div className="absolute -top-4 -right-4 w-full h-full border-2 border-pink-400 rounded-lg animate-pulse-slow"></div>
+            <div className="relative rounded-2xl overflow-hidden shadow-2xl border border-pink-700">
               <img
                 src={image}
                 alt="Women Only Fitness"
-                className="rounded-lg w-full h-auto relative z-10 shadow-xl transition-all duration-500 hover:scale-[1.02] hover:shadow-2xl"
+                className="w-full h-auto"
               />
-              <div className="absolute -bottom-6 -left-6 bg-pink-500 text-white p-4 rounded-lg shadow-lg z-20 animate-float">
-                <p className="font-bold text-xl">100% FEMMES</p>
+              <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent"></div>
+              <div className="absolute bottom-4 left-4 bg-pink-500 text-white px-4 py-2 rounded-lg shadow-lg">
+                <p className="font-bold">100% FEMMES</p>
               </div>
             </div>
           </div>
