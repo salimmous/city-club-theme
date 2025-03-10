@@ -1,638 +1,270 @@
 <?php
 /**
  * Membership Pricing Widget for Elementor
+ *
+ * @package CityClub
  */
 
-namespace CityClub\Elementor;
-
-if (!defined('ABSPATH')) {
-    exit; // Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) {
+	exit; // Exit if accessed directly.
 }
 
-use Elementor\Widget_Base;
-use Elementor\Controls_Manager;
-use Elementor\Group_Control_Typography;
-use Elementor\Group_Control_Border;
-use Elementor\Group_Control_Box_Shadow;
-use Elementor\Repeater;
+/**
+ * Membership Pricing Widget.
+ */
+class CityClub_Membership_Pricing_Widget extends \Elementor\Widget_Base {
 
-class MembershipPricingWidget extends Widget_Base {
+	/**
+	 * Get widget name.
+	 *
+	 * @return string Widget name.
+	 */
+	public function get_name() {
+		return 'cityclub_membership_pricing';
+	}
 
-    public function get_name() {
-        return 'cityclub_membership_pricing';
-    }
+	/**
+	 * Get widget title.
+	 *
+	 * @return string Widget title.
+	 */
+	public function get_title() {
+		return esc_html__( 'CityClub Membership Pricing', 'cityclub' );
+	}
 
-    public function get_title() {
-        return __('Membership Pricing', 'cityclub');
-    }
+	/**
+	 * Get widget icon.
+	 *
+	 * @return string Widget icon.
+	 */
+	public function get_icon() {
+		return 'eicon-price-table';
+	}
 
-    public function get_icon() {
-        return 'eicon-price-table';
-    }
+	/**
+	 * Get widget categories.
+	 *
+	 * @return array Widget categories.
+	 */
+	public function get_categories() {
+		return [ 'cityclub-elements' ];
+	}
 
-    public function get_categories() {
-        return ['cityclub'];
-    }
+	/**
+	 * Get widget keywords.
+	 *
+	 * @return array Widget keywords.
+	 */
+	public function get_keywords() {
+		return [ 'membership', 'pricing', 'plans', 'subscription', 'cityclub' ];
+	}
 
-    protected function register_controls() {
-        // Content Section
-        $this->start_controls_section(
-            'section_content',
-            [
-                'label' => __('Content', 'cityclub'),
-            ]
-        );
+	/**
+	 * Register widget controls.
+	 */
+	protected function register_controls() {
+		// Content Section
+		$this->start_controls_section(
+			'section_content',
+			[
+				'label' => esc_html__( 'Content', 'cityclub' ),
+				'tab'   => \Elementor\Controls_Manager::TAB_CONTENT,
+			]
+		);
 
-        $this->add_control(
-            'title',
-            [
-                'label' => __('Title', 'cityclub'),
-                'type' => Controls_Manager::TEXT,
-                'default' => __('Nos Abonnements', 'cityclub'),
-            ]
-        );
+		$this->add_control(
+			'title',
+			[
+				'label'       => esc_html__( 'Title', 'cityclub' ),
+				'type'        => \Elementor\Controls_Manager::TEXT,
+				'default'     => esc_html__( 'Nos Abonnements', 'cityclub' ),
+				'placeholder' => esc_html__( 'Enter your title', 'cityclub' ),
+				'label_block' => true,
+			]
+		);
 
-        $this->add_control(
-            'subtitle',
-            [
-                'label' => __('Subtitle', 'cityclub'),
-                'type' => Controls_Manager::TEXT,
-                'default' => __('Rejoignez une communauté de plus de 230.000 adhérents actifs', 'cityclub'),
-            ]
-        );
+		$this->add_control(
+			'subtitle',
+			[
+				'label'       => esc_html__( 'Subtitle', 'cityclub' ),
+				'type'        => \Elementor\Controls_Manager::TEXT,
+				'default'     => esc_html__( 'Rejoignez une communauté de plus de 230.000 adhérents actifs', 'cityclub' ),
+				'placeholder' => esc_html__( 'Enter your subtitle', 'cityclub' ),
+				'label_block' => true,
+			]
+		);
 
-        $this->add_control(
-            'show_comparison',
-            [
-                'label' => __('Show Comparison Toggle', 'cityclub'),
-                'type' => Controls_Manager::SWITCHER,
-                'label_on' => __('Yes', 'cityclub'),
-                'label_off' => __('No', 'cityclub'),
-                'return_value' => 'yes',
-                'default' => 'yes',
-            ]
-        );
+		$this->add_control(
+			'show_comparison',
+			[
+				'label'        => esc_html__( 'Show Comparison Toggle', 'cityclub' ),
+				'type'         => \Elementor\Controls_Manager::SWITCHER,
+				'label_on'     => esc_html__( 'Show', 'cityclub' ),
+				'label_off'    => esc_html__( 'Hide', 'cityclub' ),
+				'return_value' => 'yes',
+				'default'      => 'yes',
+			]
+		);
 
-        // Benefits Repeater
-        $benefits_repeater = new Repeater();
+		$this->add_control(
+			'background_color',
+			[
+				'label'   => esc_html__( 'Background Color', 'cityclub' ),
+				'type'    => \Elementor\Controls_Manager::SELECT,
+				'default' => 'bg-gray-50',
+				'options' => [
+					'bg-white'   => esc_html__( 'White', 'cityclub' ),
+					'bg-gray-50' => esc_html__( 'Light Gray', 'cityclub' ),
+					'bg-gray-100' => esc_html__( 'Gray', 'cityclub' ),
+					'bg-gray-900' => esc_html__( 'Dark', 'cityclub' ),
+				],
+			]
+		);
 
-        $benefits_repeater->add_control(
-            'icon',
-            [
-                'label' => __('Icon', 'cityclub'),
-                'type' => Controls_Manager::ICONS,
-                'default' => [
-                    'value' => 'fas fa-dumbbell',
-                    'library' => 'fa-solid',
-                ],
-            ]
-        );
+		$this->end_controls_section();
 
-        $benefits_repeater->add_control(
-            'title',
-            [
-                'label' => __('Title', 'cityclub'),
-                'type' => Controls_Manager::TEXT,
-                'default' => __('Équipement de Pointe', 'cityclub'),
-            ]
-        );
+		// Benefits Section
+		$this->start_controls_section(
+			'section_benefits',
+			[
+				'label' => esc_html__( 'Benefits', 'cityclub' ),
+				'tab'   => \Elementor\Controls_Manager::TAB_CONTENT,
+			]
+		);
 
-        $benefits_repeater->add_control(
-            'description',
-            [
-                'label' => __('Description', 'cityclub'),
-                'type' => Controls_Manager::TEXTAREA,
-                'default' => __('Accédez à des équipements fitness premium dans tous nos clubs à travers le Maroc.', 'cityclub'),
-            ]
-        );
+		$repeater = new \Elementor\Repeater();
 
-        $this->add_control(
-            'benefits',
-            [
-                'label' => __('Benefits', 'cityclub'),
-                'type' => Controls_Manager::REPEATER,
-                'fields' => $benefits_repeater->get_controls(),
-                'default' => [
-                    [
-                        'icon' => [
-                            'value' => 'fas fa-dumbbell',
-                            'library' => 'fa-solid',
-                        ],
-                        'title' => __('Équipement de Pointe', 'cityclub'),
-                        'description' => __('Accédez à des équipements fitness premium dans tous nos clubs à travers le Maroc.', 'cityclub'),
-                    ],
-                    [
-                        'icon' => [
-                            'value' => 'fas fa-users',
-                            'library' => 'fa-solid',
-                        ],
-                        'title' => __('Coachs Experts', 'cityclub'),
-                        'description' => __('Travaillez avec des professionnels certifiés dédiés à vous aider à atteindre vos objectifs.', 'cityclub'),
-                    ],
-                    [
-                        'icon' => [
-                            'value' => 'fas fa-award',
-                            'library' => 'fa-solid',
-                        ],
-                        'title' => __('Avantages Exclusifs', 'cityclub'),
-                        'description' => __('Profitez d'avantages exclusifs, y compris des réductions chez nos partenaires et des événements spéciaux.', 'cityclub'),
-                    ],
-                ],
-                'title_field' => '{{{ title }}}',
-            ]
-        );
+		$repeater->add_control(
+			'icon',
+			[
+				'label'   => esc_html__( 'Icon', 'cityclub' ),
+				'type'    => \Elementor\Controls_Manager::ICONS,
+				'default' => [
+					'value'   => 'fas fa-dumbbell',
+					'library' => 'fa-solid',
+				],
+			]
+		);
 
-        // Plans Repeater
-        $plans_repeater = new Repeater();
+		$repeater->add_control(
+			'title',
+			[
+				'label'       => esc_html__( 'Title', 'cityclub' ),
+				'type'        => \Elementor\Controls_Manager::TEXT,
+				'default'     => esc_html__( 'Équipement de Pointe', 'cityclub' ),
+				'label_block' => true,
+			]
+		);
 
-        $plans_repeater->add_control(
-            'name',
-            [
-                'label' => __('Plan Name', 'cityclub'),
-                'type' => Controls_Manager::TEXT,
-                'default' => __('Basic', 'cityclub'),
-            ]
-        );
+		$repeater->add_control(
+			'description',
+			[
+				'label'       => esc_html__( 'Description', 'cityclub' ),
+				'type'        => \Elementor\Controls_Manager::TEXTAREA,
+				'default'     => esc_html__( 'Accédez à des équipements fitness premium dans tous nos clubs à travers le Maroc.', 'cityclub' ),
+				'placeholder' => esc_html__( 'Enter benefit description', 'cityclub' ),
+				'rows'        => 3,
+			]
+		);
 
-        $plans_repeater->add_control(
-            'price',
-            [
-                'label' => __('Price', 'cityclub'),
-                'type' => Controls_Manager::NUMBER,
-                'default' => 299,
-            ]
-        );
+		$repeater->add_control(
+			'icon_color',
+			[
+				'label'   => esc_html__( 'Icon Color', 'cityclub' ),
+				'type'    => \Elementor\Controls_Manager::SELECT,
+				'default' => 'text-orange-500',
+				'options' => [
+					'text-orange-500' => esc_html__( 'Orange', 'cityclub' ),
+					'text-teal-500'   => esc_html__( 'Teal', 'cityclub' ),
+					'text-blue-500'   => esc_html__( 'Blue', 'cityclub' ),
+					'text-purple-500' => esc_html__( 'Purple', 'cityclub' ),
+					'text-red-500'    => esc_html__( 'Red', 'cityclub' ),
+					'text-green-500'  => esc_html__( 'Green', 'cityclub' ),
+				],
+			]
+		);
 
-        $plans_repeater->add_control(
-            'period',
-            [
-                'label' => __('Period', 'cityclub'),
-                'type' => Controls_Manager::TEXT,
-                'default' => __('mois', 'cityclub'),
-            ]
-        );
+		$this->add_control(
+			'benefits',
+			[
+				'label'       => esc_html__( 'Benefits', 'cityclub' ),
+				'type'        => \Elementor\Controls_Manager::REPEATER,
+				'fields'      => $repeater->get_controls(),
+				'default'     => [
+					[
+						'icon'        => [
+							'value'   => 'fas fa-dumbbell',
+							'library' => 'fa-solid',
+						],
+						'title'       => esc_html__( 'Équipement de Pointe', 'cityclub' ),
+						'description' => esc_html__( 'Accédez à des équipements fitness premium dans tous nos clubs à travers le Maroc.', 'cityclub' ),
+						'icon_color'  => 'text-orange-500',
+					],
+					[
+						'icon'        => [
+							'value'   => 'fas fa-users',
+							'library' => 'fa-solid',
+						],
+						'title'       => esc_html__( 'Coachs Experts', 'cityclub' ),
+						'description' => esc_html__( 'Travaillez avec des professionnels certifiés dédiés à vous aider à atteindre vos objectifs.', 'cityclub' ),
+						'icon_color'  => 'text-teal-500',
+					],
+					[
+						'icon'        => [
+							'value'   => 'fas fa-award',
+							'library' => 'fa-solid',
+						],
+						'title'       => esc_html__( 'Avantages Exclusifs', 'cityclub' ),
+						'description' => esc_html__( 'Profitez d\'avantages exclusifs, y compris des réductions chez nos partenaires et des événements spéciaux.', 'cityclub' ),
+						'icon_color'  => 'text-orange-500',
+					],
+				],
+				'title_field' => '{{{ title }}}',
+			]
+		);
 
-        $plans_repeater->add_control(
-            'description',
-            [
-                'label' => __('Description', 'cityclub'),
-                'type' => Controls_Manager::TEXTAREA,
-                'default' => __('Parfait pour les débutants et les passionnés de fitness occasionnels', 'cityclub'),
-            ]
-        );
+		$this->end_controls_section();
 
-        $plans_repeater->add_control(
-            'features',
-            [
-                'label' => __('Features (one per line)', 'cityclub'),
-                'type' => Controls_Manager::TEXTAREA,
-                'default' => "Access to main gym area\nStandard equipment usage\n2 group classes per week\nLocker access",
-                'placeholder' => __('One feature per line', 'cityclub'),
-            ]
-        );
+		// Pricing Plans Section
+		$this->start_controls_section(
+			'section_pricing_plans',
+			[
+				'label' => esc_html__( 'Pricing Plans', 'cityclub' ),
+				'tab'   => \Elementor\Controls_Manager::TAB_CONTENT,
+			]
+		);
 
-        $plans_repeater->add_control(
-            'highlighted',
-            [
-                'label' => __('Highlight This Plan', 'cityclub'),
-                'type' => Controls_Manager::SWITCHER,
-                'label_on' => __('Yes', 'cityclub'),
-                'label_off' => __('No', 'cityclub'),
-                'return_value' => 'yes',
-                'default' => '',
-            ]
-        );
+		$plans_repeater = new \Elementor\Repeater();
 
-        $plans_repeater->add_control(
-            'badge',
-            [
-                'label' => __('Badge Text', 'cityclub'),
-                'type' => Controls_Manager::TEXT,
-                'default' => __('Plus Populaire', 'cityclub'),
-                'condition' => [
-                    'highlighted' => 'yes',
-                ],
-            ]
-        );
+		$plans_repeater->add_control(
+			'name',
+			[
+				'label'       => esc_html__( 'Plan Name', 'cityclub' ),
+				'type'        => \Elementor\Controls_Manager::TEXT,
+				'default'     => esc_html__( 'Basic', 'cityclub' ),
+				'label_block' => true,
+			]
+		);
 
-        $this->add_control(
-            'plans',
-            [
-                'label' => __('Pricing Plans', 'cityclub'),
-                'type' => Controls_Manager::REPEATER,
-                'fields' => $plans_repeater->get_controls(),
-                'default' => [
-                    [
-                        'name' => __('Basic', 'cityclub'),
-                        'price' => 299,
-                        'period' => __('mois', 'cityclub'),
-                        'description' => __('Parfait pour les débutants et les passionnés de fitness occasionnels', 'cityclub'),
-                        'features' => "Access to main gym area\nStandard equipment usage\n2 group classes per week\nLocker access",
-                        'highlighted' => '',
-                    ],
-                    [
-                        'name' => __('Premium', 'cityclub'),
-                        'price' => 499,
-                        'period' => __('mois', 'cityclub'),
-                        'description' => __('Idéal pour les passionnés de fitness réguliers qui recherchent plus', 'cityclub'),
-                        'features' => "Full gym access\nAll equipment usage\nUnlimited group classes\nLocker with towel service\n1 personal training session monthly\nNutrition consultation",
-                        'highlighted' => 'yes',
-                        'badge' => __('Plus Populaire', 'cityclub'),
-                    ],
-                    [
-                        'name' => __('Elite', 'cityclub'),
-                        'price' => 799,
-                        'period' => __('mois', 'cityclub'),
-                        'description' => __('L'expérience fitness ultime pour les athlètes dédiés', 'cityclub'),
-                        'features' => "24/7 access to all locations\nPremium equipment priority\nUnlimited group classes\nPremium locker with laundry service\n4 personal training sessions monthly\nAdvanced nutrition planning\nSpa access\nGuest passes (2 per month)",
-                        'highlighted' => '',
-                    ],
-                ],
-                'title_field' => '{{{ name }}}',
-            ]
-        );
+		$plans_repeater->add_control(
+			'price',
+			[
+				'label'   => esc_html__( 'Price', 'cityclub' ),
+				'type'    => \Elementor\Controls_Manager::NUMBER,
+				'default' => 299,
+			]
+		);
 
-        // Features Comparison
-        $features_repeater = new Repeater();
+		$plans_repeater->add_control(
+			'period',
+			[
+				'label'   => esc_html__( 'Period', 'cityclub' ),
+				'type'    => \Elementor\Controls_Manager::TEXT,
+				'default' => esc_html__( 'mois', 'cityclub' ),
+			]
+		);
 
-        $features_repeater->add_control(
-            'name',
-            [
-                'label' => __('Feature Name', 'cityclub'),
-                'type' => Controls_Manager::TEXT,
-                'default' => __('Gym Access', 'cityclub'),
-            ]
-        );
-
-        $features_repeater->add_control(
-            'basic',
-            [
-                'label' => __('Included in Basic', 'cityclub'),
-                'type' => Controls_Manager::SWITCHER,
-                'label_on' => __('Yes', 'cityclub'),
-                'label_off' => __('No', 'cityclub'),
-                'return_value' => 'yes',
-                'default' => 'yes',
-            ]
-        );
-
-        $features_repeater->add_control(
-            'premium',
-            [
-                'label' => __('Included in Premium', 'cityclub'),
-                'type' => Controls_Manager::SWITCHER,
-                'label_on' => __('Yes', 'cityclub'),
-                'label_off' => __('No', 'cityclub'),
-                'return_value' => 'yes',
-                'default' => 'yes',
-            ]
-        );
-
-        $features_repeater->add_control(
-            'elite',
-            [
-                'label' => __('Included in Elite', 'cityclub'),
-                'type' => Controls_Manager::SWITCHER,
-                'label_on' => __('Yes', 'cityclub'),
-                'label_off' => __('No', 'cityclub'),
-                'return_value' => 'yes',
-                'default' => 'yes',
-            ]
-        );
-
-        $features_repeater->add_control(
-            'description',
-            [
-                'label' => __('Feature Description', 'cityclub'),
-                'type' => Controls_Manager::TEXT,
-                'default' => '',
-            ]
-        );
-
-        $this->add_control(
-            'features',
-            [
-                'label' => __('Comparison Features', 'cityclub'),
-                'type' => Controls_Manager::REPEATER,
-                'fields' => $features_repeater->get_controls(),
-                'default' => [
-                    [
-                        'name' => __('Gym Access', 'cityclub'),
-                        'basic' => 'yes',
-                        'premium' => 'yes',
-                        'elite' => 'yes',
-                    ],
-                    [
-                        'name' => __('Group Classes', 'cityclub'),
-                        'basic' => '',
-                        'premium' => 'yes',
-                        'elite' => 'yes',
-                        'description' => __('Access to instructor-led fitness classes', 'cityclub'),
-                    ],
-                    [
-                        'name' => __('Personal Training', 'cityclub'),
-                        'basic' => '',
-                        'premium' => 'yes',
-                        'elite' => 'yes',
-                        'description' => __('One-on-one sessions with certified trainers', 'cityclub'),
-                    ],
-                ],
-                'title_field' => '{{{ name }}}',
-                'condition' => [
-                    'show_comparison' => 'yes',
-                ],
-            ]
-        );
-
-        $this->add_control(
-            'cta_title',
-            [
-                'label' => __('CTA Title', 'cityclub'),
-                'type' => Controls_Manager::TEXT,
-                'default' => __('Vous ne savez pas quel forfait vous convient ?', 'cityclub'),
-            ]
-        );
-
-        $this->add_control(
-            'cta_description',
-            [
-                'label' => __('CTA Description', 'cityclub'),
-                'type' => Controls_Manager::TEXTAREA,
-                'default' => __('Visitez n'importe lequel de nos clubs pour une visite gratuite et une consultation avec nos conseillers d'adhésion. Nous vous aiderons à trouver la formule parfaite pour vos objectifs de fitness et votre budget.', 'cityclub'),
-            ]
-        );
-
-        $this->add_control(
-            'primary_button_text',
-            [
-                'label' => __('Primary Button Text', 'cityclub'),
-                'type' => Controls_Manager::TEXT,
-                'default' => __('PROGRAMMER UNE VISITE', 'cityclub'),
-            ]
-        );
-
-        $this->add_control(
-            'primary_button_link',
-            [
-                'label' => __('Primary Button Link', 'cityclub'),
-                'type' => Controls_Manager::URL,
-                'placeholder' => __('https://your-link.com', 'cityclub'),
-                'default' => [
-                    'url' => '#',
-                ],
-            ]
-        );
-
-        $this->add_control(
-            'secondary_button_text',
-            [
-                'label' => __('Secondary Button Text', 'cityclub'),
-                'type' => Controls_Manager::TEXT,
-                'default' => __('CONTACTEZ-NOUS', 'cityclub'),
-            ]
-        );
-
-        $this->add_control(
-            'secondary_button_link',
-            [
-                'label' => __('Secondary Button Link', 'cityclub'),
-                'type' => Controls_Manager::URL,
-                'placeholder' => __('https://your-link.com', 'cityclub'),
-                'default' => [
-                    'url' => '#',
-                ],
-            ]
-        );
-
-        $this->end_controls_section();
-
-        // Style Section
-        $this->start_controls_section(
-            'section_style',
-            [
-                'label' => __('Style', 'cityclub'),
-                'tab' => Controls_Manager::TAB_STYLE,
-            ]
-        );
-
-        $this->add_control(
-            'background_color',
-            [
-                'label' => __('Background Color', 'cityclub'),
-                'type' => Controls_Manager::COLOR,
-                'default' => '#f9fafb',
-                'selectors' => [
-                    '{{WRAPPER}} .cityclub-membership-section' => 'background-color: {{VALUE}};',
-                ],
-            ]
-        );
-
-        $this->add_control(
-            'title_color',
-            [
-                'label' => __('Title Color', 'cityclub'),
-                'type' => Controls_Manager::COLOR,
-                'default' => '#111827',
-                'selectors' => [
-                    '{{WRAPPER}} .section-title' => 'color: {{VALUE}};',
-                ],
-            ]
-        );
-
-        $this->add_control(
-            'subtitle_color',
-            [
-                'label' => __('Subtitle Color', 'cityclub'),
-                'type' => Controls_Manager::COLOR,
-                'default' => '#4b5563',
-                'selectors' => [
-                    '{{WRAPPER}} .section-subtitle' => 'color: {{VALUE}};',
-                ],
-            ]
-        );
-
-        $this->add_control(
-            'highlight_color',
-            [
-                'label' => __('Highlight Color', 'cityclub'),
-                'type' => Controls_Manager::COLOR,
-                'default' => '#f97316',
-                'selectors' => [
-                    '{{WRAPPER}} .highlight-color' => 'color: {{VALUE}};',
-                    '{{WRAPPER}} .highlight-border' => 'border-color: {{VALUE}};',
-                    '{{WRAPPER}} .highlight-bg' => 'background-color: {{VALUE}};',
-                ],
-            ]
-        );
-
-        $this->add_group_control(
-            Group_Control_Typography::get_type(),
-            [
-                'name' => 'title_typography',
-                'label' => __('Title Typography', 'cityclub'),
-                'selector' => '{{WRAPPER}} .section-title',
-            ]
-        );
-
-        $this->add_group_control(
-            Group_Control_Typography::get_type(),
-            [
-                'name' => 'subtitle_typography',
-                'label' => __('Subtitle Typography', 'cityclub'),
-                'selector' => '{{WRAPPER}} .section-subtitle',
-            ]
-        );
-
-        $this->end_controls_section();
-
-        // Card Style Section
-        $this->start_controls_section(
-            'section_card_style',
-            [
-                'label' => __('Pricing Cards', 'cityclub'),
-                'tab' => Controls_Manager::TAB_STYLE,
-            ]
-        );
-
-        $this->add_control(
-            'card_background_color',
-            [
-                'label' => __('Card Background Color', 'cityclub'),
-                'type' => Controls_Manager::COLOR,
-                'default' => '#ffffff',
-                'selectors' => [
-                    '{{WRAPPER}} .pricing-card' => 'background-color: {{VALUE}};',
-                ],
-            ]
-        );
-
-        $this->add_group_control(
-            Group_Control_Border::get_type(),
-            [
-                'name' => 'card_border',
-                'label' => __('Card Border', 'cityclub'),
-                'selector' => '{{WRAPPER}} .pricing-card',
-            ]
-        );
-
-        $this->add_control(
-            'card_border_radius',
-            [
-                'label' => __('Border Radius', 'cityclub'),
-                'type' => Controls_Manager::DIMENSIONS,
-                'size_units' => ['px', '%'],
-                'selectors' => [
-                    '{{WRAPPER}} .pricing-card' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
-                ],
-                'default' => [
-                    'top' => '0.5',
-                    'right' => '0.5',
-                    'bottom' => '0.5',
-                    'left' => '0.5',
-                    'unit' => 'rem',
-                    'isLinked' => true,
-                ],
-            ]
-        );
-
-        $this->add_group_control(
-            Group_Control_Box_Shadow::get_type(),
-            [
-                'name' => 'card_box_shadow',
-                'label' => __('Box Shadow', 'cityclub'),
-                'selector' => '{{WRAPPER}} .pricing-card',
-            ]
-        );
-
-        $this->add_control(
-            'card_padding',
-            [
-                'label' => __('Padding', 'cityclub'),
-                'type' => Controls_Manager::DIMENSIONS,
-                'size_units' => ['px', 'em', '%'],
-                'selectors' => [
-                    '{{WRAPPER}} .pricing-card' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
-                ],
-                'default' => [
-                    'top' => '2',
-                    'right' => '2',
-                    'bottom' => '2',
-                    'left' => '2',
-                    'unit' => 'rem',
-                    'isLinked' => true,
-                ],
-            ]
-        );
-
-        $this->end_controls_section();
-
-        // Button Style Section
-        $this->start_controls_section(
-            'section_button_style',
-            [
-                'label' => __('Buttons', 'cityclub'),
-                'tab' => Controls_Manager::TAB_STYLE,
-            ]
-        );
-
-        $this->add_control(
-            'button_background_color',
-            [
-                'label' => __('Button Background Color', 'cityclub'),
-                'type' => Controls_Manager::COLOR,
-                'default' => '#f97316',
-                'selectors' => [
-                    '{{WRAPPER}} .pricing-button' => 'background-color: {{VALUE}};',
-                ],
-            ]
-        );
-
-        $this->add_control(
-            'button_text_color',
-            [
-                'label' => __('Button Text Color', 'cityclub'),
-                'type' => Controls_Manager::COLOR,
-                'default' => '#ffffff',
-                'selectors' => [
-                    '{{WRAPPER}} .pricing-button' => 'color: {{VALUE}};',
-                ],
-            ]
-        );
-
-        $this->add_group_control(
-            Group_Control_Typography::get_type(),
-            [
-                'name' => 'button_typography',
-                'label' => __('Button Typography', 'cityclub'),
-                'selector' => '{{WRAPPER}} .pricing-button',
-            ]
-        );
-
-        $this->add_control(
-            'button_border_radius',
-            [
-                'label' => __('Border Radius', 'cityclub'),
-                'type' => Controls_Manager::DIMENSIONS,
-                'size_units' => ['px', '%'],
-                'selectors' => [
-                    '{{WRAPPER}} .pricing-button' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
-                ],
-                'default' => [
-                    'top' => '0.5',
-                    'right' => '0.5',
-                    'bottom' => '0.5',
-                    'left' => '0.5',
-                    'unit' => 'rem',
-                    'isLinked' => true,
-                ],
-            ]
-        );
-
-        $this->add_control(
-            'button_padding',
-            [
-                'label' => __('Padding', 'cityclub'),
-                'type' => Controls_Manager::DIMENSIONS,
-                'size_units' => ['px', 'em', '%'],
-                'selectors' => [
-                    '{{WRAPPER}} .pricing
+		$plans_repeater->add_control(
+			'description',
+			[
+				'label'

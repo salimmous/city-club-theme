@@ -1,564 +1,1153 @@
 <?php
 /**
  * Hero Section Widget for Elementor
+ *
+ * @package CityClub
  */
 
-namespace CityClub\Elementor;
-
-if (!defined('ABSPATH')) {
-    exit; // Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) {
+	exit; // Exit if accessed directly.
 }
 
-use Elementor\Widget_Base;
-use Elementor\Controls_Manager;
-use Elementor\Group_Control_Typography;
-use Elementor\Group_Control_Background;
-use Elementor\Group_Control_Border;
-use Elementor\Group_Control_Box_Shadow;
-use Elementor\Repeater;
+/**
+ * Hero Section Widget.
+ */
+class CityClub_Hero_Section_Widget extends \Elementor\Widget_Base {
 
-class HeroSectionWidget extends Widget_Base {
+	/**
+	 * Get widget name.
+	 *
+	 * @return string Widget name.
+	 */
+	public function get_name() {
+		return 'cityclub_hero_section';
+	}
 
-    public function get_name() {
-        return 'cityclub_hero_section';
-    }
+	/**
+	 * Get widget title.
+	 *
+	 * @return string Widget title.
+	 */
+	public function get_title() {
+		return esc_html__( 'CityClub Hero Section', 'cityclub' );
+	}
 
-    public function get_title() {
-        return __('Hero Section', 'cityclub');
-    }
+	/**
+	 * Get widget icon.
+	 *
+	 * @return string Widget icon.
+	 */
+	public function get_icon() {
+		return 'eicon-banner';
+	}
 
-    public function get_icon() {
-        return 'eicon-banner';
-    }
+	/**
+	 * Get widget categories.
+	 *
+	 * @return array Widget categories.
+	 */
+	public function get_categories() {
+		return [ 'cityclub-elements' ];
+	}
 
-    public function get_categories() {
-        return ['cityclub'];
-    }
+	/**
+	 * Get widget keywords.
+	 *
+	 * @return array Widget keywords.
+	 */
+	public function get_keywords() {
+		return [ 'hero', 'banner', 'slider', 'cityclub', 'fitness' ];
+	}
 
-    protected function register_controls() {
-        // Content Section
-        $this->start_controls_section(
-            'section_content',
-            [
-                'label' => __('Content', 'cityclub'),
-            ]
-        );
+	/**
+	 * Register widget controls.
+	 */
+	protected function register_controls() {
+		// Content Section
+		$this->start_controls_section(
+			'section_content',
+			[
+				'label' => esc_html__( 'Content', 'cityclub' ),
+				'tab'   => \Elementor\Controls_Manager::TAB_CONTENT,
+			]
+		);
 
-        $repeater = new Repeater();
+		$this->add_control(
+			'title',
+			[
+				'label'       => esc_html__( 'Title', 'cityclub' ),
+				'type'        => \Elementor\Controls_Manager::TEXT,
+				'default'     => esc_html__( 'REPRENEZ EN MAIN VOTRE SANTÉ', 'cityclub' ),
+				'placeholder' => esc_html__( 'Enter your title', 'cityclub' ),
+				'label_block' => true,
+			]
+		);
 
-        $repeater->add_control(
-            'slide_title',
-            [
-                'label' => __('Title', 'cityclub'),
-                'type' => Controls_Manager::TEXT,
-                'default' => __('REPRENEZ EN MAIN VOTRE SANTÉ', 'cityclub'),
-                'label_block' => true,
-            ]
-        );
+		$this->add_control(
+			'subtitle',
+			[
+				'label'       => esc_html__( 'Subtitle', 'cityclub' ),
+				'type'        => \Elementor\Controls_Manager::TEXT,
+				'default'     => esc_html__( 'Avec le bilan médico-sportif et nos 600+ coachs certifiés', 'cityclub' ),
+				'placeholder' => esc_html__( 'Enter your subtitle', 'cityclub' ),
+				'label_block' => true,
+			]
+		);
 
-        $repeater->add_control(
-            'slide_subtitle',
-            [
-                'label' => __('Subtitle', 'cityclub'),
-                'type' => Controls_Manager::TEXT,
-                'default' => __('Avec le bilan médico-sportif et nos 600+ coachs certifiés', 'cityclub'),
-                'label_block' => true,
-            ]
-        );
+		$this->add_control(
+			'badge_text',
+			[
+				'label'       => esc_html__( 'Badge Text', 'cityclub' ),
+				'type'        => \Elementor\Controls_Manager::TEXT,
+				'default'     => esc_html__( 'PLUS DE 42 CLUBS AU MAROC', 'cityclub' ),
+				'placeholder' => esc_html__( 'Enter badge text', 'cityclub' ),
+				'label_block' => true,
+			]
+		);
 
-        $repeater->add_control(
-            'slide_image',
-            [
-                'label' => __('Background Image', 'cityclub'),
-                'type' => Controls_Manager::MEDIA,
-                'default' => [
-                    'url' => 'https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=1200&q=80',
-                ],
-            ]
-        );
+		$this->add_control(
+			'primary_button_text',
+			[
+				'label'       => esc_html__( 'Primary Button Text', 'cityclub' ),
+				'type'        => \Elementor\Controls_Manager::TEXT,
+				'default'     => esc_html__( 'REJOIGNEZ-NOUS', 'cityclub' ),
+				'placeholder' => esc_html__( 'Enter button text', 'cityclub' ),
+			]
+		);
 
-        $repeater->add_control(
-            'location_id',
-            [
-                'label' => __('Location ID', 'cityclub'),
-                'type' => Controls_Manager::TEXT,
-                'default' => 'loc1',
-            ]
-        );
+		$this->add_control(
+			'primary_button_link',
+			[
+				'label'       => esc_html__( 'Primary Button Link', 'cityclub' ),
+				'type'        => \Elementor\Controls_Manager::URL,
+				'placeholder' => esc_html__( 'https://your-link.com', 'cityclub' ),
+				'default'     => [
+					'url'               => '#membership',
+					'is_external'        => false,
+					'nofollow'           => false,
+					'custom_attributes' => '',
+				],
+			]
+		);
 
-        $this->add_control(
-            'slides',
-            [
-                'label' => __('Slides', 'cityclub'),
-                'type' => Controls_Manager::REPEATER,
-                'fields' => $repeater->get_controls(),
-                'default' => [
-                    [
-                        'slide_title' => __('REPRENEZ EN MAIN VOTRE SANTÉ', 'cityclub'),
-                        'slide_subtitle' => __('Avec le bilan médico-sportif et nos 600+ coachs certifiés', 'cityclub'),
-                        'slide_image' => [
-                            'url' => 'https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=1200&q=80',
-                        ],
-                        'location_id' => 'loc1',
-                    ],
-                    [
-                        'slide_title' => __('Marrakech Medina', 'cityclub'),
-                        'slide_subtitle' => __('Experience fitness with a view of the historic Medina', 'cityclub'),
-                        'slide_image' => [
-                            'url' => 'https://images.unsplash.com/photo-1571902943202-507ec2618e8f?w=1200&q=80',
-                        ],
-                        'location_id' => 'loc2',
-                    ],
-                ],
-                'title_field' => '{{{ slide_title }}}',
-            ]
-        );
+		$this->add_control(
+			'secondary_button_text',
+			[
+				'label'       => esc_html__( 'Secondary Button Text', 'cityclub' ),
+				'type'        => \Elementor\Controls_Manager::TEXT,
+				'default'     => esc_html__( 'NOS COURS', 'cityclub' ),
+				'placeholder' => esc_html__( 'Enter button text', 'cityclub' ),
+			]
+		);
 
-        $this->add_control(
-            'autoplay_interval',
-            [
-                'label' => __('Autoplay Interval (ms)', 'cityclub'),
-                'type' => Controls_Manager::NUMBER,
-                'default' => 5000,
-                'min' => 1000,
-                'max' => 10000,
-                'step' => 500,
-            ]
-        );
+		$this->add_control(
+			'secondary_button_link',
+			[
+				'label'       => esc_html__( 'Secondary Button Link', 'cityclub' ),
+				'type'        => \Elementor\Controls_Manager::URL,
+				'placeholder' => esc_html__( 'https://your-link.com', 'cityclub' ),
+				'default'     => [
+					'url'               => '#classes',
+					'is_external'        => false,
+					'nofollow'           => false,
+					'custom_attributes' => '',
+				],
+			]
+		);
 
-        $this->add_control(
-            'primary_button_text',
-            [
-                'label' => __('Primary Button Text', 'cityclub'),
-                'type' => Controls_Manager::TEXT,
-                'default' => __('REJOIGNEZ-NOUS', 'cityclub'),
-            ]
-        );
+		$this->end_controls_section();
 
-        $this->add_control(
-            'primary_button_link',
-            [
-                'label' => __('Primary Button Link', 'cityclub'),
-                'type' => Controls_Manager::URL,
-                'placeholder' => __('https://your-link.com', 'cityclub'),
-                'default' => [
-                    'url' => '#membership',
-                ],
-            ]
-        );
+		// Slides Section
+		$this->start_controls_section(
+			'section_slides',
+			[
+				'label' => esc_html__( 'Slides', 'cityclub' ),
+				'tab'   => \Elementor\Controls_Manager::TAB_CONTENT,
+			]
+		);
 
-        $this->add_control(
-            'secondary_button_text',
-            [
-                'label' => __('Secondary Button Text', 'cityclub'),
-                'type' => Controls_Manager::TEXT,
-                'default' => __('NOS COURS', 'cityclub'),
-            ]
-        );
+		$repeater = new \Elementor\Repeater();
 
-        $this->add_control(
-            'secondary_button_link',
-            [
-                'label' => __('Secondary Button Link', 'cityclub'),
-                'type' => Controls_Manager::URL,
-                'placeholder' => __('https://your-link.com', 'cityclub'),
-                'default' => [
-                    'url' => '#classes',
-                ],
-            ]
-        );
+		$repeater->add_control(
+			'slide_title',
+			[
+				'label'       => esc_html__( 'Slide Title', 'cityclub' ),
+				'type'        => \Elementor\Controls_Manager::TEXT,
+				'default'     => esc_html__( 'Slide Title', 'cityclub' ),
+				'label_block' => true,
+			]
+		);
 
-        $this->end_controls_section();
+		$repeater->add_control(
+			'slide_subtitle',
+			[
+				'label'       => esc_html__( 'Slide Subtitle', 'cityclub' ),
+				'type'        => \Elementor\Controls_Manager::TEXT,
+				'default'     => esc_html__( 'Slide Subtitle', 'cityclub' ),
+				'label_block' => true,
+			]
+		);
 
-        // Style Section
-        $this->start_controls_section(
-            'section_style',
-            [
-                'label' => __('Style', 'cityclub'),
-                'tab' => Controls_Manager::TAB_STYLE,
-            ]
-        );
+		$repeater->add_control(
+			'slide_image',
+			[
+				'label'   => esc_html__( 'Background Image', 'cityclub' ),
+				'type'    => \Elementor\Controls_Manager::MEDIA,
+				'default' => [
+					'url' => \Elementor\Utils::get_placeholder_image_src(),
+				],
+			]
+		);
 
-        $this->add_group_control(
-            Group_Control_Typography::get_type(),
-            [
-                'name' => 'title_typography',
-                'label' => __('Title Typography', 'cityclub'),
-                'selector' => '{{WRAPPER}} .hero-title',
-            ]
-        );
+		$repeater->add_control(
+			'location_id',
+			[
+				'label'       => esc_html__( 'Location ID', 'cityclub' ),
+				'type'        => \Elementor\Controls_Manager::TEXT,
+				'default'     => esc_html__( 'loc1', 'cityclub' ),
+				'placeholder' => esc_html__( 'Enter location ID', 'cityclub' ),
+			]
+		);
 
-        $this->add_group_control(
-            Group_Control_Typography::get_type(),
-            [
-                'name' => 'subtitle_typography',
-                'label' => __('Subtitle Typography', 'cityclub'),
-                'selector' => '{{WRAPPER}} .hero-subtitle',
-            ]
-        );
+		$this->add_control(
+			'slides',
+			[
+				'label'       => esc_html__( 'Slides', 'cityclub' ),
+				'type'        => \Elementor\Controls_Manager::REPEATER,
+				'fields'      => $repeater->get_controls(),
+				'default'     => [
+					[
+						'slide_title'    => esc_html__( 'REPRENEZ EN MAIN VOTRE SANTÉ', 'cityclub' ),
+						'slide_subtitle' => esc_html__( 'Avec le bilan médico-sportif et nos 600+ coachs certifiés', 'cityclub' ),
+						'location_id'    => 'loc1',
+					],
+					[
+						'slide_title'    => esc_html__( 'Marrakech Medina', 'cityclub' ),
+						'slide_subtitle' => esc_html__( 'Experience fitness with a view of the historic Medina', 'cityclub' ),
+						'location_id'    => 'loc2',
+					],
+					[
+						'slide_title'    => esc_html__( 'Rabat Agdal', 'cityclub' ),
+						'slide_subtitle' => esc_html__( 'Modern facilities in the heart of the capital', 'cityclub' ),
+						'location_id'    => 'loc3',
+					],
+				],
+				'title_field' => '{{{ slide_title }}}',
+			]
+		);
 
-        $this->add_control(
-            'title_color',
-            [
-                'label' => __('Title Color', 'cityclub'),
-                'type' => Controls_Manager::COLOR,
-                'default' => '#ffffff',
-                'selectors' => [
-                    '{{WRAPPER}} .hero-title' => 'color: {{VALUE}};',
-                ],
-            ]
-        );
+		$this->add_control(
+			'autoplay',
+			[
+				'label'        => esc_html__( 'Autoplay', 'cityclub' ),
+				'type'         => \Elementor\Controls_Manager::SWITCHER,
+				'label_on'     => esc_html__( 'Yes', 'cityclub' ),
+				'label_off'    => esc_html__( 'No', 'cityclub' ),
+				'return_value' => 'yes',
+				'default'      => 'yes',
+			]
+		);
 
-        $this->add_control(
-            'subtitle_color',
-            [
-                'label' => __('Subtitle Color', 'cityclub'),
-                'type' => Controls_Manager::COLOR,
-                'default' => '#ffffff',
-                'selectors' => [
-                    '{{WRAPPER}} .hero-subtitle' => 'color: {{VALUE}};',
-                ],
-            ]
-        );
+		$this->add_control(
+			'autoplay_speed',
+			[
+				'label'     => esc_html__( 'Autoplay Speed', 'cityclub' ),
+				'type'      => \Elementor\Controls_Manager::NUMBER,
+				'min'       => 1000,
+				'max'       => 10000,
+				'step'      => 500,
+				'default'   => 5000,
+				'condition' => [
+					'autoplay' => 'yes',
+				],
+			]
+		);
 
-        $this->add_control(
-            'overlay_color',
-            [
-                'label' => __('Overlay Color', 'cityclub'),
-                'type' => Controls_Manager::COLOR,
-                'default' => 'rgba(0, 0, 0, 0.5)',
-                'selectors' => [
-                    '{{WRAPPER}} .hero-overlay' => 'background-color: {{VALUE}};',
-                ],
-            ]
-        );
+		$this->end_controls_section();
 
-        $this->end_controls_section();
+		// Location Selector Section
+		$this->start_controls_section(
+			'section_location_selector',
+			[
+				'label' => esc_html__( 'Location Selector', 'cityclub' ),
+				'tab'   => \Elementor\Controls_Manager::TAB_CONTENT,
+			]
+		);
 
-        // Button Style Section
-        $this->start_controls_section(
-            'section_button_style',
-            [
-                'label' => __('Buttons', 'cityclub'),
-                'tab' => Controls_Manager::TAB_STYLE,
-            ]
-        );
+		$this->add_control(
+			'show_location_selector',
+			[
+				'label'        => esc_html__( 'Show Location Selector', 'cityclub' ),
+				'type'         => \Elementor\Controls_Manager::SWITCHER,
+				'label_on'     => esc_html__( 'Show', 'cityclub' ),
+				'label_off'    => esc_html__( 'Hide', 'cityclub' ),
+				'return_value' => 'yes',
+				'default'      => 'yes',
+			]
+		);
 
-        $this->add_control(
-            'primary_button_bg_color',
-            [
-                'label' => __('Primary Button Background', 'cityclub'),
-                'type' => Controls_Manager::COLOR,
-                'default' => '#f97316',
-                'selectors' => [
-                    '{{WRAPPER}} .primary-button' => 'background-color: {{VALUE}};',
-                ],
-            ]
-        );
+		$location_repeater = new \Elementor\Repeater();
 
-        $this->add_control(
-            'primary_button_text_color',
-            [
-                'label' => __('Primary Button Text Color', 'cityclub'),
-                'type' => Controls_Manager::COLOR,
-                'default' => '#ffffff',
-                'selectors' => [
-                    '{{WRAPPER}} .primary-button' => 'color: {{VALUE}};',
-                ],
-            ]
-        );
+		$location_repeater->add_control(
+			'location_id',
+			[
+				'label'       => esc_html__( 'Location ID', 'cityclub' ),
+				'type'        => \Elementor\Controls_Manager::TEXT,
+				'default'     => esc_html__( 'loc1', 'cityclub' ),
+				'placeholder' => esc_html__( 'Enter location ID', 'cityclub' ),
+			]
+		);
 
-        $this->add_control(
-            'secondary_button_bg_color',
-            [
-                'label' => __('Secondary Button Background', 'cityclub'),
-                'type' => Controls_Manager::COLOR,
-                'default' => 'rgba(255, 255, 255, 0.1)',
-                'selectors' => [
-                    '{{WRAPPER}} .secondary-button' => 'background-color: {{VALUE}};',
-                ],
-            ]
-        );
+		$location_repeater->add_control(
+			'location_name',
+			[
+				'label'       => esc_html__( 'Location Name', 'cityclub' ),
+				'type'        => \Elementor\Controls_Manager::TEXT,
+				'default'     => esc_html__( 'CityClub Casablanca Central', 'cityclub' ),
+				'placeholder' => esc_html__( 'Enter location name', 'cityclub' ),
+				'label_block' => true,
+			]
+		);
 
-        $this->add_control(
-            'secondary_button_text_color',
-            [
-                'label' => __('Secondary Button Text Color', 'cityclub'),
-                'type' => Controls_Manager::COLOR,
-                'default' => '#ffffff',
-                'selectors' => [
-                    '{{WRAPPER}} .secondary-button' => 'color: {{VALUE}};',
-                ],
-            ]
-        );
+		$location_repeater->add_control(
+			'location_city',
+			[
+				'label'       => esc_html__( 'City', 'cityclub' ),
+				'type'        => \Elementor\Controls_Manager::TEXT,
+				'default'     => esc_html__( 'Casablanca', 'cityclub' ),
+				'placeholder' => esc_html__( 'Enter city name', 'cityclub' ),
+			]
+		);
 
-        $this->add_group_control(
-            Group_Control_Typography::get_type(),
-            [
-                'name' => 'button_typography',
-                'label' => __('Button Typography', 'cityclub'),
-                'selector' => '{{WRAPPER}} .hero-button',
-            ]
-        );
+		$location_repeater->add_control(
+			'location_address',
+			[
+				'label'       => esc_html__( 'Address', 'cityclub' ),
+				'type'        => \Elementor\Controls_Manager::TEXT,
+				'default'     => esc_html__( '123 Mohammed V Boulevard', 'cityclub' ),
+				'placeholder' => esc_html__( 'Enter address', 'cityclub' ),
+				'label_block' => true,
+			]
+		);
 
-        $this->add_group_control(
-            Group_Control_Border::get_type(),
-            [
-                'name' => 'button_border',
-                'label' => __('Button Border', 'cityclub'),
-                'selector' => '{{WRAPPER}} .hero-button',
-            ]
-        );
+		$this->add_control(
+			'locations',
+			[
+				'label'       => esc_html__( 'Locations', 'cityclub' ),
+				'type'        => \Elementor\Controls_Manager::REPEATER,
+				'fields'      => $location_repeater->get_controls(),
+				'default'     => [
+					[
+						'location_id'      => 'loc1',
+						'location_name'    => esc_html__( 'CityClub Casablanca Central', 'cityclub' ),
+						'location_city'    => esc_html__( 'Casablanca', 'cityclub' ),
+						'location_address' => esc_html__( '123 Mohammed V Boulevard', 'cityclub' ),
+					],
+					[
+						'location_id'      => 'loc2',
+						'location_name'    => esc_html__( 'CityClub Marrakech Medina', 'cityclub' ),
+						'location_city'    => esc_html__( 'Marrakech', 'cityclub' ),
+						'location_address' => esc_html__( '45 Jemaa el-Fnaa Square', 'cityclub' ),
+					],
+					[
+						'location_id'      => 'loc3',
+						'location_name'    => esc_html__( 'CityClub Rabat Agdal', 'cityclub' ),
+						'location_city'    => esc_html__( 'Rabat', 'cityclub' ),
+						'location_address' => esc_html__( '78 Hassan II Avenue', 'cityclub' ),
+					],
+				],
+				'title_field' => '{{{ location_name }}}',
+				'condition'   => [
+					'show_location_selector' => 'yes',
+				],
+			]
+		);
 
-        $this->add_control(
-            'button_border_radius',
-            [
-                'label' => __('Border Radius', 'cityclub'),
-                'type' => Controls_Manager::DIMENSIONS,
-                'size_units' => ['px', '%'],
-                'selectors' => [
-                    '{{WRAPPER}} .hero-button' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
-                ],
-                'default' => [
-                    'top' => '0.75',
-                    'right' => '0.75',
-                    'bottom' => '0.75',
-                    'left' => '0.75',
-                    'unit' => 'rem',
-                    'isLinked' => true,
-                ],
-            ]
-        );
+		$this->end_controls_section();
 
-        $this->end_controls_section();
-    }
+		// Style Tab
+		$this->start_controls_section(
+			'section_style_general',
+			[
+				'label' => esc_html__( 'General', 'cityclub' ),
+				'tab'   => \Elementor\Controls_Manager::TAB_STYLE,
+			]
+		);
 
-    protected function render() {
-        $settings = $this->get_settings_for_display();
-        $slides = $settings['slides'];
-        $autoplay_interval = $settings['autoplay_interval'];
-        
-        if (empty($slides)) {
-            return;
-        }
-        
-        // Get locations for the dropdown
-        $locations = [];
-        foreach ($slides as $slide) {
-            $locations[] = [
-                'id' => $slide['location_id'],
-                'name' => $slide['slide_title'],
-            ];
-        }
-        
-        // Output HTML
-        ?>
-        <div class="cityclub-hero-section relative w-full h-[100vh] min-h-[700px] bg-gray-900 overflow-hidden">
-            <!-- Background Slides -->
-            <?php foreach ($slides as $index => $slide) : ?>
-                <div class="hero-slide absolute inset-0 transition-opacity duration-1000 <?php echo $index === 0 ? 'opacity-100' : 'opacity-0'; ?>" data-slide-index="<?php echo $index; ?>" data-location-id="<?php echo esc_attr($slide['location_id']); ?>">
-                    <div class="absolute inset-0 bg-cover bg-center" style="background-image: url('<?php echo esc_url($slide['slide_image']['url']); ?>')"></div>
-                    <div class="hero-overlay absolute inset-0 bg-black bg-opacity-50"></div>
-                </div>
-            <?php endforeach; ?>
+		$this->add_responsive_control(
+			'hero_height',
+			[
+				'label'      => esc_html__( 'Height', 'cityclub' ),
+				'type'       => \Elementor\Controls_Manager::SLIDER,
+				'size_units' => [ 'px', 'vh', '%' ],
+				'range'      => [
+					'px' => [
+						'min'  => 300,
+						'max'  => 1200,
+						'step' => 10,
+					],
+					'vh' => [
+						'min' => 30,
+						'max' => 100,
+					],
+					'%'  => [
+						'min' => 30,
+						'max' => 100,
+					],
+				],
+				'default'    => [
+					'unit' => 'vh',
+					'size' => 100,
+				],
+				'selectors'  => [
+					'{{WRAPPER}} .cityclub-hero-section' => 'height: {{SIZE}}{{UNIT}};',
+				],
+			]
+		);
 
-            <!-- Content -->
-            <div class="relative h-full flex flex-col justify-center items-center text-white px-4 z-10">
-                <div class="max-w-5xl mx-auto text-center mb-8">
-                    <div class="inline-block bg-black/30 backdrop-blur-md px-6 py-2 rounded-full mb-8 animate-pulse-slow border border-white/20">
-                        <span class="text-sm md:text-base font-medium tracking-wider">
-                            <?php echo esc_html__('PLUS DE 42 CLUBS AU MAROC', 'cityclub'); ?>
-                        </span>
-                    </div>
+		$this->add_control(
+			'overlay_color',
+			[
+				'label'     => esc_html__( 'Overlay Color', 'cityclub' ),
+				'type'      => \Elementor\Controls_Manager::COLOR,
+				'default'   => 'rgba(0, 0, 0, 0.5)',
+				'selectors' => [
+					'{{WRAPPER}} .cityclub-hero-slide-overlay' => 'background-color: {{VALUE}};',
+				],
+			]
+		);
 
-                    <div class="overflow-hidden mb-2">
-                        <h1 class="hero-title text-6xl md:text-8xl font-black mb-2 animate-text-reveal" style="animation-delay: 300ms;">
-                            <?php echo esc_html($slides[0]['slide_title']); ?>
-                        </h1>
-                    </div>
+		$this->end_controls_section();
 
-                    <div class="overflow-hidden mb-8">
-                        <div class="animate-text-reveal" style="animation-delay: 600ms;">
-                            <div class="text-6xl md:text-7xl font-black bg-gradient-to-r from-orange-500 via-teal-400 to-orange-500 text-transparent bg-clip-text animate-gradient-x">
-                                CITY<span class="text-teal-400">CLUB</span>
-                                <span class="text-orange-500 text-xs align-super">+</span>
-                            </div>
-                        </div>
-                    </div>
+		// Typography Style Section
+		$this->start_controls_section(
+			'section_style_typography',
+			[
+				'label' => esc_html__( 'Typography', 'cityclub' ),
+				'tab'   => \Elementor\Controls_Manager::TAB_STYLE,
+			]
+		);
 
-                    <div class="overflow-hidden mb-10">
-                        <p class="hero-subtitle text-xl md:text-2xl max-w-2xl mx-auto font-light animate-text-reveal" style="animation-delay: 900ms;">
-                            <?php echo esc_html($slides[0]['slide_subtitle']); ?>
-                        </p>
-                    </div>
+		$this->add_control(
+			'title_color',
+			[
+				'label'     => esc_html__( 'Title Color', 'cityclub' ),
+				'type'      => \Elementor\Controls_Manager::COLOR,
+				'default'   => '#ffffff',
+				'selectors' => [
+					'{{WRAPPER}} .cityclub-hero-title' => 'color: {{VALUE}};',
+				],
+			]
+		);
 
-                    <div class="flex flex-col sm:flex-row justify-center gap-4">
-                        <a href="<?php echo esc_url($settings['primary_button_link']['url']); ?>" class="hero-button primary-button bg-gradient-to-r from-orange-500 to-orange-600 text-white font-bold py-6 px-10 rounded-xl relative overflow-hidden group transition-all duration-300 hover:shadow-xl hover:shadow-orange-500/30 hover:scale-105 text-lg">
-                            <span class="relative z-10 flex items-center">
-                                <?php echo esc_html($settings['primary_button_text']); ?> <span class="ml-2">→</span>
-                            </span>
-                            <span class="absolute top-0 -left-[100%] w-[120%] h-full bg-gradient-to-r from-transparent via-white/20 to-transparent skew-x-[25deg] animate-[glint_3s_ease-in-out_infinite_alternate]"></span>
-                        </a>
+		$this->add_group_control(
+			\Elementor\Group_Control_Typography::get_type(),
+			[
+				'name'     => 'title_typography',
+				'selector' => '{{WRAPPER}} .cityclub-hero-title',
+			]
+		);
 
-                        <a href="<?php echo esc_url($settings['secondary_button_link']['url']); ?>" class="hero-button secondary-button backdrop-blur-md bg-white/10 border-2 border-white/50 text-white hover:bg-white hover:text-gray-900 font-bold py-6 px-10 rounded-xl transition-all duration-300 hover:shadow-lg hover:shadow-white/30 hover:scale-105 text-lg">
-                            <span class="relative z-10 flex items-center">
-                                <?php echo esc_html($settings['secondary_button_text']); ?> <span class="ml-2">→</span>
-                            </span>
-                        </a>
-                    </div>
-                </div>
+		$this->add_control(
+			'subtitle_color',
+			[
+				'label'     => esc_html__( 'Subtitle Color', 'cityclub' ),
+				'type'      => \Elementor\Controls_Manager::COLOR,
+				'default'   => '#ffffff',
+				'selectors' => [
+					'{{WRAPPER}} .cityclub-hero-subtitle' => 'color: {{VALUE}};',
+				],
+				'separator' => 'before',
+			]
+		);
 
-                <!-- Location Selector -->
-                <div class="absolute bottom-16 left-0 right-0 mx-auto max-w-3xl px-4">
-                    <div class="cityclub-location-selector flex flex-col sm:flex-row items-center gap-2 bg-white rounded-lg p-2 shadow-md">
-                        <div class="flex items-center gap-2 text-gray-700 font-medium">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
-                                <circle cx="12" cy="10" r="3"></circle>
-                            </svg>
-                            <span><?php echo esc_html__('Choisir un Club:', 'cityclub'); ?></span>
-                        </div>
+		$this->add_group_control(
+			\Elementor\Group_Control_Typography::get_type(),
+			[
+				'name'     => 'subtitle_typography',
+				'selector' => '{{WRAPPER}} .cityclub-hero-subtitle',
+			]
+		);
 
-                        <div class="w-full sm:w-64">
-                            <select class="location-select w-full bg-white border-gray-300 focus:ring-primary rounded-md p-2" data-autoplay-interval="<?php echo esc_attr($autoplay_interval); ?>">
-                                <?php foreach ($locations as $index => $location) : ?>
-                                    <option value="<?php echo esc_attr($location['id']); ?>" <?php echo $index === 0 ? 'selected' : ''; ?>>
-                                        <?php echo esc_html($location['name']); ?>
-                                    </option>
-                                <?php endforeach; ?>
-                            </select>
-                        </div>
+		$this->add_control(
+			'badge_color',
+			[
+				'label'     => esc_html__( 'Badge Color', 'cityclub' ),
+				'type'      => \Elementor\Controls_Manager::COLOR,
+				'default'   => '#ffffff',
+				'selectors' => [
+					'{{WRAPPER}} .cityclub-hero-badge' => 'color: {{VALUE}};',
+				],
+				'separator' => 'before',
+			]
+		);
 
-                        <button class="get-directions-btn bg-primary hover:bg-primary/90 text-white whitespace-nowrap relative overflow-hidden group transition-all duration-300 hover:shadow-lg hover:shadow-orange-500/30 py-2 px-4 rounded-md">
-                            <span class="relative z-10"><?php echo esc_html__('ITINÉRAIRE', 'cityclub'); ?></span>
-                            <span class="absolute inset-0 bg-gradient-to-r from-orange-600 to-orange-400 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
-                        </button>
-                    </div>
-                </div>
-            </div>
+		$this->add_control(
+			'badge_background',
+			[
+				'label'     => esc_html__( 'Badge Background', 'cityclub' ),
+				'type'      => \Elementor\Controls_Manager::COLOR,
+				'default'   => 'rgba(0, 0, 0, 0.3)',
+				'selectors' => [
+					'{{WRAPPER}} .cityclub-hero-badge' => 'background-color: {{VALUE}};',
+				],
+			]
+		);
 
-            <!-- Navigation Arrows -->
-            <button class="hero-prev-btn absolute left-6 top-1/2 transform -translate-y-1/2 bg-white/10 backdrop-blur-sm hover:bg-orange-500 text-white p-3 rounded-full z-20 transition-all duration-300 hover:scale-110 hover:shadow-lg hover:shadow-orange-500/50 border border-white/20">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <polyline points="15 18 9 12 15 6"></polyline>
-                </svg>
-            </button>
-            <button class="hero-next-btn absolute right-6 top-1/2 transform -translate-y-1/2 bg-white/10 backdrop-blur-sm hover:bg-orange-500 text-white p-3 rounded-full z-20 transition-all duration-300 hover:scale-110 hover:shadow-lg hover:shadow-orange-500/50 border border-white/20">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <polyline points="9 18 15 12 9 6"></polyline>
-                </svg>
-            </button>
+		$this->add_group_control(
+			\Elementor\Group_Control_Typography::get_type(),
+			[
+				'name'     => 'badge_typography',
+				'selector' => '{{WRAPPER}} .cityclub-hero-badge',
+			]
+		);
 
-            <!-- Slide Indicators -->
-            <div class="hero-indicators absolute bottom-40 left-0 right-0 flex justify-center gap-3 z-20">
-                <?php foreach ($slides as $index => $slide) : ?>
-                    <button class="hero-indicator h-3 rounded-full transition-all <?php echo $index === 0 ? 'bg-orange-500 w-8 shadow-lg shadow-orange-500/50' : 'bg-white/30 w-3 hover:bg-white/60'; ?>" data-index="<?php echo $index; ?>"></button>
-                <?php endforeach; ?>
-            </div>
-        </div>
+		$this->end_controls_section();
 
-        <script>
-        jQuery(document).ready(function($) {
-            // Hero Section Slider
-            var currentSlide = 0;
-            var slides = $('.hero-slide');
-            var indicators = $('.hero-indicator');
-            var totalSlides = slides.length;
-            var autoplayInterval = $('.location-select').data('autoplay-interval');
-            var autoplayTimer;
-            var isAutoPlaying = true;
+		// Buttons Style Section
+		$this->start_controls_section(
+			'section_style_buttons',
+			[
+				'label' => esc_html__( 'Buttons', 'cityclub' ),
+				'tab'   => \Elementor\Controls_Manager::TAB_STYLE,
+			]
+		);
 
-            // Function to show a specific slide
-            function showSlide(index) {
-                slides.removeClass('opacity-100').addClass('opacity-0');
-                $(slides[index]).removeClass('opacity-0').addClass('opacity-100');
-                
-                // Update indicators
-                indicators.removeClass('bg-orange-500 w-8 shadow-lg shadow-orange-500/50').addClass('bg-white/30 w-3');
-                $(indicators[index]).removeClass('bg-white/30 w-3').addClass('bg-orange-500 w-8 shadow-lg shadow-orange-500/50');
-                
-                // Update location selector
-                var locationId = $(slides[index]).data('location-id');
-                $('.location-select').val(locationId);
-                
-                // Update content
-                $('.hero-title').text($(slides[index]).find('.slide-title').text());
-                $('.hero-subtitle').text($(slides[index]).find('.slide-subtitle').text());
-                
-                currentSlide = index;
-            }
+		$this->start_controls_tabs( 'tabs_button_style' );
 
-            // Next slide
-            $('.hero-next-btn').click(function() {
-                isAutoPlaying = false;
-                var nextSlide = (currentSlide + 1) % totalSlides;
-                showSlide(nextSlide);
-                resetAutoplayTimer();
-            });
+		// Primary Button Tab
+		$this->start_controls_tab(
+			'tab_primary_button',
+			[
+				'label' => esc_html__( 'Primary', 'cityclub' ),
+			]
+		);
 
-            // Previous slide
-            $('.hero-prev-btn').click(function() {
-                isAutoPlaying = false;
-                var prevSlide = (currentSlide - 1 + totalSlides) % totalSlides;
-                showSlide(prevSlide);
-                resetAutoplayTimer();
-            });
+		$this->add_control(
+			'primary_button_text_color',
+			[
+				'label'     => esc_html__( 'Text Color', 'cityclub' ),
+				'type'      => \Elementor\Controls_Manager::COLOR,
+				'default'   => '#ffffff',
+				'selectors' => [
+					'{{WRAPPER}} .cityclub-hero-button-primary' => 'color: {{VALUE}};',
+				],
+			]
+		);
 
-            // Indicator click
-            indicators.click(function() {
-                isAutoPlaying = false;
-                var index = $(this).data('index');
-                showSlide(index);
-                resetAutoplayTimer();
-            });
+		$this->add_group_control(
+			\Elementor\Group_Control_Background::get_type(),
+			[
+				'name'     => 'primary_button_background',
+				'types'    => [ 'classic', 'gradient' ],
+				'selector' => '{{WRAPPER}} .cityclub-hero-button-primary',
+				'default'  => [
+					'type'     => 'gradient',
+					'gradient' => [
+						'start'  => '#f97316',
+						'end'    => '#ea580c',
+						'angle'  => 90,
+						'type'   => 'linear',
+						'repeat' => 'no-repeat',
+					],
+				],
+			]
+		);
 
-            // Location selector change
-            $('.location-select').change(function() {
-                isAutoPlaying = false;
-                var locationId = $(this).val();
-                slides.each(function(index) {
-                    if ($(this).data('location-id') === locationId) {
-                        showSlide(index);
-                        return false;
-                    }
-                });
-                resetAutoplayTimer();
-            });
+		$this->add_group_control(
+			\Elementor\Group_Control_Border::get_type(),
+			[
+				'name'     => 'primary_button_border',
+				'selector' => '{{WRAPPER}} .cityclub-hero-button-primary',
+			]
+		);
 
-            // Autoplay function
-            function startAutoplay() {
-                autoplayTimer = setInterval(function() {
-                    if (isAutoPlaying) {
-                        var nextSlide = (currentSlide + 1) % totalSlides;
-                        showSlide(nextSlide);
-                    }
-                }, autoplayInterval);
-            }
+		$this->add_control(
+			'primary_button_border_radius',
+			[
+				'label'      => esc_html__( 'Border Radius', 'cityclub' ),
+				'type'       => \Elementor\Controls_Manager::DIMENSIONS,
+				'size_units' => [ 'px', '%' ],
+				'selectors'  => [
+					'{{WRAPPER}} .cityclub-hero-button-primary' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+				],
+				'default'    => [
+					'top'    => 10,
+					'right'  => 10,
+					'bottom' => 10,
+					'left'   => 10,
+					'unit'   => 'px',
+				],
+			]
+		);
 
-            // Reset autoplay timer
-            function resetAutoplayTimer() {
-                clearInterval(autoplayTimer);
-                setTimeout(function() {
-                    isAutoPlaying = true;
-                    startAutoplay();
-                }, 10000);
-            }
+		$this->add_group_control(
+			\Elementor\Group_Control_Box_Shadow::get_type(),
+			[
+				'name'     => 'primary_button_box_shadow',
+				'selector' => '{{WRAPPER}} .cityclub-hero-button-primary',
+			]
+		);
 
-            // Start autoplay
-            startAutoplay();
+		$this->add_group_control(
+			\Elementor\Group_Control_Typography::get_type(),
+			[
+				'name'     => 'primary_button_typography',
+				'selector' => '{{WRAPPER}} .cityclub-hero-button-primary',
+			]
+		);
 
-            // Get directions button
-            $('.get-directions-btn').click(function() {
-                var locationId = $('.location-select').val();
-                // In a real implementation, this would use the actual location data
-                window.open('https://maps.google.com/?q=CityClub+' + locationId, '_blank');
-            });
-        });
-        </script>
-        <?php
-    }
+		$this->add_responsive_control(
+			'primary_button_padding',
+			[
+				'label'      => esc_html__( 'Padding', 'cityclub' ),
+				'type'       => \Elementor\Controls_Manager::DIMENSIONS,
+				'size_units' => [ 'px', 'em', '%' ],
+				'selectors'  => [
+					'{{WRAPPER}} .cityclub-hero-button-primary' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+				],
+				'default'    => [
+					'top'    => 15,
+					'right'  => 30,
+					'bottom' => 15,
+					'left'   => 30,
+					'unit'   => 'px',
+				],
+			]
+		);
 
-    protected function content_template() {
-        // JavaScript template for the Elementor editor
-    }
+		$this->end_controls_tab();
+
+		// Secondary Button Tab
+		$this->start_controls_tab(
+			'tab_secondary_button',
+			[
+				'label' => esc_html__( 'Secondary', 'cityclub' ),
+			]
+		);
+
+		$this->add_control(
+			'secondary_button_text_color',
+			[
+				'label'     => esc_html__( 'Text Color', 'cityclub' ),
+				'type'      => \Elementor\Controls_Manager::COLOR,
+				'default'   => '#ffffff',
+				'selectors' => [
+					'{{WRAPPER}} .cityclub-hero-button-secondary' => 'color: {{VALUE}};',
+				],
+			]
+		);
+
+		$this->add_control(
+			'secondary_button_background_color',
+			[
+				'label'     => esc_html__( 'Background Color', 'cityclub' ),
+				'type'      => \Elementor\Controls_Manager::COLOR,
+				'default'   => 'rgba(255, 255, 255, 0.1)',
+				'selectors' => [
+					'{{WRAPPER}} .cityclub-hero-button-secondary' => 'background-color: {{VALUE}};',
+				],
+			]
+		);
+
+		$this->add_group_control(
+			\Elementor\Group_Control_Border::get_type(),
+			[
+				'name'     => 'secondary_button_border',
+				'selector' => '{{WRAPPER}} .cityclub-hero-button-secondary',
+				'default'  => [
+					'border' => [
+						'width' => 2,
+						'color' => '#ffffff',
+						'style' => 'solid',
+					],
+				],
+			]
+		);
+
+		$this->add_control(
+			'secondary_button_border_radius',
+			[
+				'label'      => esc_html__( 'Border Radius', 'cityclub' ),
+				'type'       => \Elementor\Controls_Manager::DIMENSIONS,
+				'size_units' => [ 'px', '%' ],
+				'selectors'  => [
+					'{{WRAPPER}} .cityclub-hero-button-secondary' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+				],
+				'default'    => [
+					'top'    => 10,
+					'right'  => 10,
+					'bottom' => 10,
+					'left'   => 10,
+					'unit'   => 'px',
+				],
+			]
+		);
+
+		$this->add_group_control(
+			\Elementor\Group_Control_Box_Shadow::get_type(),
+			[
+				'name'     => 'secondary_button_box_shadow',
+				'selector' => '{{WRAPPER}} .cityclub-hero-button-secondary',
+			]
+		);
+
+		$this->add_group_control(
+			\Elementor\Group_Control_Typography::get_type(),
+			[
+				'name'     => 'secondary_button_typography',
+				'selector' => '{{WRAPPER}} .cityclub-hero-button-secondary',
+			]
+		);
+
+		$this->add_responsive_control(
+			'secondary_button_padding',
+			[
+				'label'      => esc_html__( 'Padding', 'cityclub' ),
+				'type'       => \Elementor\Controls_Manager::DIMENSIONS,
+				'size_units' => [ 'px', 'em', '%' ],
+				'selectors'  => [
+					'{{WRAPPER}} .cityclub-hero-button-secondary' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+				],
+				'default'    => [
+					'top'    => 15,
+					'right'  => 30,
+					'bottom' => 15,
+					'left'   => 30,
+					'unit'   => 'px',
+				],
+			]
+		);
+
+		$this->end_controls_tab();
+
+		$this->end_controls_tabs();
+
+		$this->end_controls_section();
+
+		// Navigation Style Section
+		$this->start_controls_section(
+			'section_style_navigation',
+			[
+				'label' => esc_html__( 'Navigation', 'cityclub' ),
+				'tab'   => \Elementor\Controls_Manager::TAB_STYLE,
+			]
+		);
+
+		$this->add_control(
+			'arrows_color',
+			[
+				'label'     => esc_html__( 'Arrows Color', 'cityclub' ),
+				'type'      => \Elementor\Controls_Manager::COLOR,
+				'default'   => '#ffffff',
+				'selectors' => [
+					'{{WRAPPER}} .cityclub-hero-arrow' => 'color: {{VALUE}};',
+				],
+			]
+		);
+
+		$this->add_control(
+			'arrows_background_color',
+			[
+				'label'     => esc_html__( 'Arrows Background', 'cityclub' ),
+				'type'      => \Elementor\Controls_Manager::COLOR,
+				'default'   => 'rgba(255, 255, 255, 0.1)',
+				'selectors' => [
+					'{{WRAPPER}} .cityclub-hero-arrow' => 'background-color: {{VALUE}};',
+				],
+			]
+		);
+
+		$this->add_control(
+			'arrows_hover_color',
+			[
+				'label'     => esc_html__( 'Arrows Hover Color', 'cityclub' ),
+				'type'      => \Elementor\Controls_Manager::COLOR,
+				'default'   => '#ffffff',
+				'selectors' => [
+					'{{WRAPPER}} .cityclub-hero-arrow:hover' => 'color: {{VALUE}};',
+				],
+			]
+		);
+
+		$this->add_control(
+			'arrows_hover_background_color',
+			[
+				'label'     => esc_html__( 'Arrows Hover Background', 'cityclub' ),
+				'type'      => \Elementor\Controls_Manager::COLOR,
+				'default'   => '#f97316',
+				'selectors' => [
+					'{{WRAPPER}} .cityclub-hero-arrow:hover' => 'background-color: {{VALUE}};',
+				],
+			]
+		);
+
+		$this->add_control(
+			'dots_color',
+			[
+				'label'     => esc_html__( 'Dots Color', 'cityclub' ),
+				'type'      => \Elementor\Controls_Manager::COLOR,
+				'default'   => 'rgba(255, 255, 255, 0.3)',
+				'selectors' => [
+					'{{WRAPPER}} .cityclub-hero-dot' => 'background-color: {{VALUE}};',
+				],
+				'separator' => 'before',
+			]
+		);
+
+		$this->add_control(
+			'dots_active_color',
+			[
+				'label'     => esc_html__( 'Active Dot Color', 'cityclub' ),
+				'type'      => \Elementor\Controls_Manager::COLOR,
+				'default'   => '#f97316',
+				'selectors' => [
+					'{{WRAPPER}} .cityclub-hero-dot.active' => 'background-color: {{VALUE}};',
+				],
+			]
+		);
+
+		$this->end_controls_section();
+
+		// Location Selector Style Section
+		$this->start_controls_section(
+			'section_style_location_selector',
+			[
+				'label'     => esc_html__( 'Location Selector', 'cityclub' ),
+				'tab'       => \Elementor\Controls_Manager::TAB_STYLE,
+				'condition' => [
+					'show_location_selector' => 'yes',
+				],
+			]
+		);
+
+		$this->add_control(
+			'location_selector_background',
+			[
+				'label'     => esc_html__( 'Background Color', 'cityclub' ),
+				'type'      => \Elementor\Controls_Manager::COLOR,
+				'default'   => 'rgba(255, 255, 255, 0.9)',
+				'selectors' => [
+					'{{WRAPPER}} .cityclub-location-selector' => 'background-color: {{VALUE}};',
+				],
+			]
+		);
+
+		$this->add_control(
+			'location_selector_text_color',
+			[
+				'label'     => esc_html__( 'Text Color', 'cityclub' ),
+				'type'      => \Elementor\Controls_Manager::COLOR,
+				'default'   => '#333333',
+				'selectors' => [
+					'{{WRAPPER}} .cityclub-location-selector' => 'color: {{VALUE}};',
+				],
+			]
+		);
+
+		$this->add_group_control(
+			\Elementor\Group_Control_Typography::get_type(),
+			[
+				'name'     => 'location_selector_typography',
+				'selector' => '{{WRAPPER}} .cityclub-location-selector',
+			]
+		);
+
+		$this->add_group_control(
+			\Elementor\Group_Control_Border::get_type(),
+			[
+				'name'     => 'location_selector_border',
+				'selector' => '{{WRAPPER}} .cityclub-location-selector',
+			]
+		);
+
+		$this->add_control(
+			'location_selector_border_radius',
+			[
+				'label'      => esc_html__( 'Border Radius', 'cityclub' ),
+				'type'       => \Elementor\Controls_Manager::DIMENSIONS,
+				'size_units' => [ 'px', '%' ],
+				'selectors'  => [
+					'{{WRAPPER}} .cityclub-location-selector' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+				],
+				'default'    => [
+					'top'    => 8,
+					'right'  => 8,
+					'bottom' => 8,
+					'left'   => 8,
+					'unit'   => 'px',
+				],
+			]
+		);
+
+		$this->add_group_control(
+			\Elementor\Group_Control_Box_Shadow::get_type(),
+			[
+				'name'     => 'location_selector_box_shadow',
+				'selector' => '{{WRAPPER}} .cityclub-location-selector',
+			]
+		);
+
+		$this->add_responsive_control(
+			'location_selector_padding',
+			[
+				'label'      => esc_html__( 'Padding', 'cityclub' ),
+				'type'       => \Elementor\Controls_Manager::DIMENSIONS,
+				'size_units' => [ 'px', 'em', '%' ],
+				'selectors'  => [
+					'{{WRAPPER}} .cityclub-location-selector' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+				],
+				'default'    => [
+					'top'    => 10,
+					'right'  => 15,
+					'bottom' => 10,
+					'left'   => 15,
+					'unit'   => 'px',
+				],
+			]
+		);
+
+		$this->add_responsive_control(
+			'location_selector_margin',
+			[
+				'label'      => esc_html__( 'Margin', 'cityclub' ),
+				'type'       => \Elementor\Controls_Manager::DIMENSIONS,
+				'size_units' => [ 'px', 'em', '%' ],
+				'selectors'  => [
+					'{{WRAPPER}} .cityclub-location-selector-wrapper' => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+				],
+			]
+		);
+
+		$this->end_controls_section();
+	}
+
+	/**
+	 * Render widget output on the frontend.
+	 */
+	protected function render() {
+		$settings = $this->get_settings_for_display();
+
+		// Hero Section Container
+		?>
+		<div class="cityclub-hero-section relative w-full bg-gray-900 overflow-hidden">
+			<!-- Background Slides -->
+			<?php foreach ( $settings['slides'] as $index => $slide ) : ?>
+				<div class="cityclub-hero-slide absolute inset-0 transition-opacity duration-1000 <?php echo 0 === $index ? 'opacity-100' : 'opacity-0'; ?>" data-slide-index="<?php echo esc_attr( $index ); ?>" data-location-id="<?php echo esc_attr( $slide['location_id'] ); ?>">
+					<div class="cityclub-hero-slide-bg absolute inset-0 bg-cover bg-center" style="background-image: url('<?php echo esc_url( $slide['slide_image']['url'] ); ?>');"></div>
+					<div class="cityclub-hero-slide-overlay absolute inset-0"></div>
+				</div>
+			<?php endforeach; ?>
+
+			<!-- Content -->
+			<div class="cityclub-hero-content relative h-full flex flex-col justify-center items-center text-white px-4 z-10">
+				<div class="max-w-5xl mx-auto text-center mb-8">
+					<div class="cityclub-hero-badge inline-block bg-black/30 backdrop-blur-md px-6 py-2 rounded-full mb-8 animate-pulse-slow border border-white/20">
+						<span class="text-sm md:text-base font-medium tracking-wider">
+							<?php echo esc_html( $settings['badge_text'] ); ?>
+						</span>
+					</div>
+
+					<div class="overflow-hidden mb-2">
+						<h1 class="cityclub-hero-title text-6xl md:text-8xl font-black mb-2 animate-text-reveal" style="animation-delay: 300ms;">
+							<?php echo esc_html( $settings['title'] ); ?>
+						</h1>
+					</div>
+
+					<div class="overflow-hidden mb-8">
+						<div class="animate-text-reveal" style="animation-delay: 600ms;">
+							<div class="text-6xl md:text-7xl font-black bg-clip-text text-transparent bg-gradient-to-r from-orange-500 via-teal-400 to-orange-500 animate-gradient-x">
+								CITY<span class="text-teal-400">CLUB</span>
+								<span class="text-orange-500 text-xs align-super">+</span>
+							</div>
+						</div>
+					</div>
+
+					<div class="overflow-hidden mb-10">
+						<p class="cityclub-hero-subtitle text-xl md:text-2xl max-w-2xl mx-auto font-light animate-text-reveal" style="animation-delay: 900ms;">
+							<?php echo esc_html( $settings['subtitle'] ); ?>
+						</p>
+					</div>
+
+					<div class="flex flex-col sm:flex-row justify-center gap-4">
+						<a href="<?php echo esc_url( $settings['primary_button_link']['url'] ); ?>" class="cityclub-hero-button-primary bg-gradient-to-r from-orange-500 to-orange-600 text-white font-bold py-6 px-10 rounded-xl relative overflow-hidden group transition-all duration-300 hover:shadow-xl hover:shadow-orange-500/30 hover:scale-105 text-lg">
+							<span class="relative z-10 flex items-center">
+								<?php echo esc_html( $settings['primary_button_text'] ); ?> <span class="ml-2">→</span>
+							</span>
+							<span class="absolute top-0 -left-[100%] w-[120%] h-full bg-gradient-to-r from-transparent via-white/20 to-transparent skew-x-[25deg] animate-[glint_3s_ease-in-out_infinite_alternate]"></span>
+						</a>
+
+						<a href="<?php echo esc_url( $settings['secondary_button_link']['url'] ); ?>" class="cityclub-hero-button-secondary backdrop-blur-md bg-white/10 border-2 border-white/50 text-white hover:bg-white hover:text-gray-900 font-bold py-6 px-10 rounded-xl transition-all duration-300 hover:shadow-lg hover:shadow-white/30 hover:scale-105 text-lg">
+							<span class="relative z-10 flex items-center">
+								<?php echo esc_html( $settings['secondary_button_text'] ); ?> <span class="ml-2">→</span>
+							</span>
+						</a>
+					</div>
+				</div>
+
+				<?php if ( 'yes' === $settings['show_location_selector'] ) : ?>
+					<!-- Location Selector -->
+					<div class="cityclub-location-selector-wrapper absolute bottom-16 left-0 right-0 mx-auto max-w-3xl px-4">
+						<div class="cityclub-location-selector flex flex-col sm:flex-row items-center gap-2 bg-white rounded-lg p-2 shadow-md">
+							<div class="flex items-center gap-2 text-gray-700 font-medium">
+								<i class="fas fa-map-marker-alt text-primary"></i>
+								<span>Choisir un Club:</span>
+							</div>
+
+							<div class="w-full sm:w-64">
+								<select class="cityclub-location-dropdown w-full bg-white border-gray-300 focus:ring-primary rounded-md p-2" data-location-selector>
+									<?php foreach ( $settings['locations'] as $location ) : ?>
+										<option value="<?php echo esc_attr( $location['location_id'] ); ?>">
+											<?php echo esc_html( $location['location_name'] ); ?> - <?php echo esc_html( $location['location_city'] ); ?>
+										</option>
+									<?php endforeach; ?>
+								</select>
+							</div>
+
+							<button class="cityclub-location-button bg-primary hover:bg-primary/90 text-white whitespace-nowrap relative overflow-hidden group transition-all duration-300 hover:shadow-lg hover:shadow-orange-500/30 py-2 px-4 rounded-md">
+								<span class="relative z-10">ITINÉRAIRE</span>
+								<span class="absolute inset-0 bg-gradient-to-r from-orange-600 to-orange-400 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
+							</button>
+						</div>
+					</div>
+				<?php endif; ?>
+			</div>
+
+			<!-- Navigation Arrows -->
+			<button class="cityclub-hero-arrow cityclub-hero-prev absolute left-6 top-1/2 transform -translate-y-1/2 bg-white/10 backdrop-blur-sm hover:bg-orange-500 text-white p-3 rounded-full z-20 transition-all duration-300 hover:scale-110 hover:shadow-lg hover:shadow-orange-500/50 border border-white/20">
+				<i class="fas fa-chevron-left"></i>
+			</button>
+			<button class="cityclub-hero-arrow cityclub-hero-next absolute right-6 top-1/2 transform -translate-y-1/2 bg-white/10 backdrop-blur-sm hover:bg-orange-500 text-white p-3 rounded-full z-20 transition-all duration-300 hover:scale-110 hover:shadow-lg hover:shadow-orange-500/50 border border-white/20">
+				<i class="fas fa-chevron-right"></i>
+			</button>
+
+			<!-- Slide Indicators -->
+			<div class="absolute bottom-40 left-0 right-0 flex justify-center gap-3 z-20">
+				<?php foreach ( $settings['slides'] as $index => $slide ) : ?>
+					<button class="cityclub-hero-dot h-3 rounded-full transition-all <?php echo 0 === $index ? 'active bg-orange-500 w-8 shadow-lg shadow-orange-500/50' : 'bg-white/30 w-3 hover:bg-white/60'; ?>" data-slide-index="<?php echo esc_attr( $index ); ?>"></button>
+				<?php endforeach; ?>
+			</div>
+		</div>
+
+		<script>
+			document.addEventListener('DOMContentLoaded', function() {
+				const heroSection = document.querySelector('.cityclub-hero-section');
+				const slides = heroSection.querySelectorAll('.cityclub-hero-slide');
+				const dots = heroSection.querySelectorAll('.cityclub-hero-dot');
+				const prevBtn = heroSection.querySelector('.cityclub-hero-prev');
+				const nextBtn = heroSection.querySelector('.cityclub-hero-next');
+				const locationSelector = heroSection.querySelector('[data-location-selector]');
+				
+				let currentSlide = 0;
+				let isAutoPlaying = <?php echo 'yes' === $settings['autoplay'] ? 'true' : 'false'; ?>;
+				let autoplayInterval;
+				
+				// Function to show a specific slide
+				function showSlide(index) {
+					slides.forEach((slide, i) => {
+						slide.classList.toggle('opacity-0', i !== index);
+						slide.classList.toggle('opacity-100', i === index);
+					});
+					
+					dots.forEach((dot, i) => {
+						dot.classList.toggle('active', i === index);
+						dot.classList.toggle('bg-orange-500', i === index);
+						dot.classList.toggle('w-8', i === index);
+						dot.classList.toggle('shadow-lg', i === index);
+						dot.classList.toggle('shadow-orange-500/50', i === index);
+						dot.classList.toggle('bg-white/30', i !== index);
+						dot.classList.toggle('w-3', i !== index);
+					});
+					
+					currentSlide = index;
+					
+					// Update location selector if it exists
+					if (locationSelector) {
+						const locationId = slides[index].getAttribute('data-location-id');
+						locationSelector.value = locationId;
+					}
+				}
+				
+				// Next slide function
+				function nextSlide() {
+					let next = currentSlide + 1;
+					if (next >= slides.length) next = 0;
+					showSlide(next);
+				}
+				
+				// Previous slide function
+				function prevSlide() {
+					let prev = currentSlide - 1;
+					if (prev < 0) prev = slides.length - 1;
+					showSlide(prev);
+				}
+				
+				// Set up autoplay
+				function startAutoplay() {
+					if (isAutoPlaying) {
+						autoplayInterval = setInterval(() => {
+							nextSlide();
+						}, <?php echo absint( $settings['autoplay_speed'] ); ?>);
+					}
+				}
+				
+				function stopAutoplay() {
+					clearInterval(autoplayInterval);
+				}
+				
+				// Event listeners
+				prevBtn.addEventListener('click', () => {
+					prevSlide();
+					stopAutoplay();
+					isAutoPlaying = false;
+				});
+				
+				nextBtn.addEventListener('click', () => {
+					nextSlide();
+					stopAutoplay();
+					isAutoPlaying = false;
+				});
+				
+				dots.forEach((dot, index) => {
+					dot.addEventListener('click', () => {
+						showSlide(index);
+						stopAutoplay();
+						isAutoPlaying = false;
+					});
+				});
+				
+				// Location selector change event
+				if (locationSelector) {
+					locationSelector.addEventListener('change', () => {
+						const selectedLocationId = locationSelector.value;
+						slides.forEach((slide, index) => {
+							if (slide.getAttribute('data-location-id') === selectedLocationId) {
+								showSlide(index);
+								stopAutoplay();
+								isAutoPlaying = false;
+							}
+						});
+					});
+				}
+				
+				// Initialize
+				startAutoplay();
+				
+				// Resume autoplay after inactivity
+				let inactivityTimeout;
+				function resetInactivityTimer() {
+					clearTimeout(inactivityTimeout);
+					inactivityTimeout = setTimeout(() => {
+						isAutoPlaying = true;
+						startAutoplay();
+					}, 10000); // Resume autoplay after 10 seconds of inactivity
+				}
+				
+				// Reset inactivity timer on user interaction
+				heroSection.addEventListener('click', resetInactivityTimer);
+				heroSection.addEventListener('touchstart', resetInactivityTimer);
+			});
+		</script>
+		<?php
+	}
 }

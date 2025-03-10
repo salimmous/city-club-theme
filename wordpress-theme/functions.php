@@ -233,6 +233,18 @@ function cityclub_create_directories() {
 add_action('after_switch_theme', 'cityclub_create_directories');
 
 /**
+ * Create custom header file if it doesn't exist
+ */
+function cityclub_create_custom_header_file() {
+    $custom_header_file = get_template_directory() . '/inc/custom-header.php';
+    if (!file_exists($custom_header_file)) {
+        $custom_header_content = "<?php\n/**\n * Sample implementation of the Custom Header feature\n *\n * @link https://developer.wordpress.org/themes/functionality/custom-headers/\n *\n * @package CityClub\n */\n\n/**\n * Set up the WordPress core custom header feature.\n *\n * @uses cityclub_header_style()\n */\nfunction cityclub_custom_header_setup() {\n\tadd_theme_support(\n\t\t'custom-header',\n\t\tapply_filters(\n\t\t\t'cityclub_custom_header_args',\n\t\t\tarray(\n\t\t\t\t'default-image'      => '',\n\t\t\t\t'default-text-color' => '000000',\n\t\t\t\t'width'              => 1920,\n\t\t\t\t'height'             => 250,\n\t\t\t\t'flex-height'        => true,\n\t\t\t\t'wp-head-callback'   => 'cityclub_header_style',\n\t\t\t)\n\t\t)\n\t);\n}\nadd_action( 'after_setup_theme', 'cityclub_custom_header_setup' );\n\nif ( ! function_exists( 'cityclub_header_style' ) ) :\n\t/**\n\t * Styles the header image and text displayed on the blog.\n\t *\n\t * @see cityclub_custom_header_setup().\n\t */\n\tfunction cityclub_header_style() {\n\t\t$header_text_color = get_header_textcolor();\n\n\t\t/*\n\t\t * If no custom options for text are set, let's bail.\n\t\t* get_header_textcolor() options: Any hex value, 'blank' to hide text. Default: add_theme_support( 'custom-header' ).\n\t\t*/\n\t\tif ( get_theme_support( 'custom-header', 'default-text-color' ) === $header_text_color ) {\n\t\t\treturn;\n\t\t}\n\n\t\t// If we get this far, we have custom styles. Let's do this.\n\t\t?>\n\t\t<style type=\"text/css\">\n\t\t<?php\n\t\t// Has the text been hidden?\n\t\tif ( ! display_header_text() ) :\n\t\t\t?>\n\t\t\t.site-title,\n\t\t\t.site-description {\n\t\t\t\tposition: absolute;\n\t\t\t\tclip: rect(1px, 1px, 1px, 1px);\n\t\t\t\t}\n\t\t\t<?php\n\t\t// If the user has set a custom color for the text use that.\n\t\telse :\n\t\t\t?>\n\t\t\t.site-title a,\n\t\t\t.site-description {\n\t\t\t\tcolor: #<?php echo esc_attr( $header_text_color ); ?>;\n\t\t\t\t}\n\t\t\t<?php endif; ?>\n\t\t</style>\n\t\t<?php\n\t}\nendif;\n";
+        file_put_contents($custom_header_file, $custom_header_content);
+    }
+}
+add_action('after_switch_theme', 'cityclub_create_custom_header_file');
+
+/**
  * Implement the Custom Header feature.
  */
 require get_template_directory() . '/inc/custom-header.php';
@@ -258,11 +270,3 @@ require get_template_directory() . '/inc/custom-post-types.php';
 if (defined('ELEMENTOR_VERSION')) {
     require get_template_directory() . '/inc/elementor/elementor.php';
 }
-
-/**
- * Create custom header file if it doesn't exist
- */
-function cityclub_create_custom_header_file() {
-    $custom_header_file = get_template_directory() . '/inc/custom-header.php';
-    if (!file_exists($custom_header_file)) {
-        $custom_header_content = "<?php\n/**\n * Sample implementation of the Custom Header feature\n *\n * @link https://developer.wordpress.org/themes/functionality/custom-headers/\n *\n * @package CityClub\n */\n\n/**\n * Set up the WordPress core custom header feature.\n *\n * @uses cityclub_header_style()\n */\nfunction cityclub_custom_header_setup() {\n\tadd_theme_support(\n\t\t'custom-header',\n\t\tapply_filters(\n\t\t\t'cityclub_custom_header_args',\n\t\t\tarray(\n\t\t\t\t'default-image'      => '',\n\t\t\t\t'default-text-color' => '000000',\n\t\t\t\t'width'              => 1920,\n\t\t\t\t'height'             => 250,\n\t\t\t\t'flex-height'        => true,\n\t\t\t\t'wp-head-callback'   => 'cityclub_header_style',\n\t\t\t)\n\t\t)\n\t);\n}\nadd_action( 'after_setup_theme', 'cityclub_custom_header_setup' );\n\nif ( ! function_exists( 'cityclub_header_style' ) ) :\n\t/**\n\t * Styles the header image and text displayed on the blog.\n\t *\n\t * @see cityclub_custom_header_setup().\n\t */\n\tfunction cityclub_header_style() {\n\t\t$header_text_color = get_header_textcolor();\n\n\t\t/*\n\t\t * If no custom options for text are set, let's bail.\n\t\t* get_header_textcolor() options: Any hex value, 'blank' to hide text. Default: add_theme_support( 'custom-header' ).\n\t\t*/\n\t\tif ( get_theme_support( 'custom-header', 'default-text-color' ) === $header_text_color ) {\n\t\t\treturn;\n\t\t}\n\n\t\t// If we get this far, we have custom styles. Let's do this.\n\t\t?>\n\t\t<style type=\"text/css\">\n\t\t<?php\n\t\t// Has the text been hidden?\n\t\tif ( ! display_header_text() ) :\n\t\t\t?>\n\t\t\t.site-title,\n\t\t\t.site-description {\n\t\t\t\tposition: absolute;\n\t\t\t\tclip: rect(1px, 1px, 1px, 1px);\n\t\t\t\t}\n\t\t\t<?php\n\t\t// If the user has set a custom color for the text use that.\n\t\telse :\n\t\t\t?>\n\t\t

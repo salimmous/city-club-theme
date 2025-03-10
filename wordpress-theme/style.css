@@ -11,3 +11,300 @@ Tags: fitness, gym, elementor, responsive
 
 /* Base styles will be handled by Elementor */
 /* This file is required for WordPress theme recognition */
+
+/* Sidebar Styles */
+.sidebar-fitness {
+  padding: 30px;
+  background-color: #f8f9fa;
+  border-radius: 10px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+}
+
+.sidebar-inner {
+  position: relative;
+}
+
+.sidebar-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 15px;
+  color: #333;
+  position: relative;
+  padding-bottom: 10px;
+}
+
+.sidebar-title:after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 50px;
+  height: 3px;
+  background: var(--primary-color, #f97316);
+  border-radius: 3px;
+}
+
+.sidebar-cta {
+  background: linear-gradient(
+    135deg,
+    var(--primary-color, #f97316) 0%,
+    #ea580c 100%
+  );
+  padding: 25px;
+  border-radius: 8px;
+  color: white;
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+.sidebar-cta .sidebar-title {
+  color: white;
+}
+
+.sidebar-cta .sidebar-title:after {
+  background: rgba(255, 255, 255, 0.3);
+  width: 80px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.sidebar-cta p {
+  margin-bottom: 20px;
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+.sidebar-button {
+  display: inline-block;
+  background-color: white;
+  color: var(--primary-color, #f97316);
+  font-weight: 700;
+  padding: 12px 25px;
+  border-radius: 50px;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  font-size: 0.9rem;
+  letter-spacing: 0.5px;
+}
+
+.sidebar-button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+.sidebar-hours,
+.sidebar-contact {
+  margin-bottom: 30px;
+  padding: 20px;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.03);
+}
+
+.hours-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.hours-list li {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 0;
+  border-bottom: 1px dashed #eee;
+}
+
+.hours-list li:last-child {
+  border-bottom: none;
+}
+
+.hours-list span {
+  font-weight: 600;
+  color: #555;
+}
+
+.sidebar-contact p {
+  margin: 10px 0;
+  display: flex;
+  align-items: center;
+}
+
+.sidebar-contact i {
+  color: var(--primary-color, #f97316);
+  margin-right: 10px;
+  font-size: 1.1rem;
+}
+
+/* Widget styling */
+.widget {
+  margin-bottom: 30px;
+  padding: 20px;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.03);
+}
+
+.widget-title {
+  font-size: 1.3rem;
+  font-weight: 700;
+  margin-bottom: 15px;
+  color: #333;
+  position: relative;
+  padding-bottom: 10px;
+}
+
+.widget-title:after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 40px;
+  height: 3px;
+  background: var(--primary-color, #f97316);
+  border-radius: 3px;
+}
+
+.widget ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.widget ul li {
+  padding: 8px 0;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.widget ul li:last-child {
+  border-bottom: none;
+}
+
+.widget ul li a {
+  color: #555;
+  text-decoration: none;
+  transition: color 0.3s ease;
+  display: block;
+}
+
+.widget ul li a:hover {
+  color: var(--primary-color, #f97316);
+}
+
+/* Search widget */
+.widget_search .search-form {
+  position: relative;
+}
+
+.widget_search .search-field {
+  width: 100%;
+  padding: 12px 15px;
+  border: 1px solid #e0e0e0;
+  border-radius: 5px;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+}
+
+.widget_search .search-field:focus {
+  border-color: var(--primary-color, #f97316);
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.1);
+}
+
+.widget_search .search-submit {
+  position: absolute;
+  right: 0;
+  top: 0;
+  height: 100%;
+  background-color: var(--primary-color, #f97316);
+  color: white;
+  border: none;
+  padding: 0 15px;
+  border-radius: 0 5px 5px 0;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.widget_search .search-submit:hover {
+  background-color: #ea580c;
+}
+
+/* Tag cloud widget */
+.widget_tag_cloud .tagcloud {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.widget_tag_cloud .tag-cloud-link {
+  display: inline-block;
+  padding: 5px 12px;
+  background-color: #f0f0f0;
+  border-radius: 3px;
+  font-size: 0.85rem !important;
+  color: #555;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.widget_tag_cloud .tag-cloud-link:hover {
+  background-color: var(--primary-color, #f97316);
+  color: white;
+}
+
+/* Calendar widget */
+.widget_calendar table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.widget_calendar caption {
+  font-weight: 700;
+  margin-bottom: 10px;
+  color: #333;
+}
+
+.widget_calendar th,
+.widget_calendar td {
+  padding: 8px 0;
+  text-align: center;
+  border: 1px solid #f0f0f0;
+}
+
+.widget_calendar th {
+  background-color: #f8f9fa;
+  font-weight: 600;
+}
+
+.widget_calendar #today {
+  background-color: var(--primary-color, #f97316);
+  color: white;
+  font-weight: 700;
+}
+
+.widget_calendar a {
+  color: var(--primary-color, #f97316);
+  text-decoration: none;
+  font-weight: 600;
+}
+
+/* Recent posts widget */
+.widget_recent_entries li,
+.widget_recent_comments li {
+  margin-bottom: 10px;
+  padding-bottom: 10px;
+}
+
+.widget_recent_entries .post-date {
+  display: block;
+  font-size: 0.85rem;
+  color: #888;
+  margin-top: 3px;
+}
+
+/* Media queries for responsive sidebar */
+@media (max-width: 991px) {
+  .sidebar-fitness {
+    margin-top: 40px;
+  }
+}
